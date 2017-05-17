@@ -35,31 +35,36 @@
 <!-- SOMEWHERE  on this page there will be a CALENDAR API that show availability -->
 
 
-	<div id="search_listings">
+	<div>
         <h1> Select This Listing</h1>
-        <form action="/book_listing" method="GET">
+        <form id="book-listings">
 
             Date Range: <br>
-            Start:<input type="text" name="start_date" required>
-            End:<input type="text" name="end_date" required><br>
+            Start:<input type="text" size="2" name="start_date" id="start_date" required>
+            End:<input type="text" size="2" name="end_date" id="end_date" required><br>
             <br>
 
             Ad Dimensions: <br>
-            Height:<input type="text" name="ad_height" required>
-            Width:<input type="text" name="ad_width" required><br>
+            Height:<input type="text" size="2" name="ad_height" id="ad-height" required>
+            Width:<input type="text" size="2" name="ad_width" id="ad-width" required><br>
+
+
+            <br>
+            <br>
+            <br>
 
             Price:<br>
-            Total to book:<input type="text" name="min_price" required>
-<!--             dynamically generated based on the above entries -->
+            Total to book: $
+            <span id="result">&nbsp;</span>
             <br>
-
-            <br>
-            <br>
-            <input type="submit" name="book_listing" value="Book!">
+ 	        <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!">
+           
         </form>
 
-	</div>
 
+	</div>
+<!-- <script src="http://code.jquery.com/jquery.js"></script> -->
+<script src="static/js/booking.js"></script>
 
 <!-- 
  When the advertiser selects to BOOK listing -  a pop up will show that says "Owner has been notified of you interest in this booking from date range : ____ to _____. They will confirm/deny within 1-2 days. Once the cinfirmation in selected YOU will receive an email with their contact information to complete the transaction." 

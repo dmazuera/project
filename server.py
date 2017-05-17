@@ -200,22 +200,19 @@ def process_new_listing():
 ##########################################################################
 # HALF PAGE MAP --- other half SEARCH
 
-@app.route('/zipcode_search')
-def zipcode_search():
+@app.route('/search_zipcode')
+def search_zipcode():
     """Show map of SF with search functionality on page."""
 
-    DO A QUERY to get all lat long
-That will returna list of results
-  use that list and pass it into my map
 
-    markers = db.session.query
+    zipcode = request.args.get("zipcode")
+    zipcode_listings = Listings.query.filter(Listings.zipcode == zipcode).all()
+    #returns to map html all of the listings data matching that zipcode
 
-    db.session.
-
-
+    return render_template("map_select_listing.html",
+                            zipcode_listings= zipcode_listings)
 
 
-    return render_template("map_select_listing.html")
 
 
 
@@ -241,28 +238,6 @@ def book_listing():
     return render_template("listing_details.html")
 
 
-
-
-
-#TALKING TO DATA BASE TO RETRIEVE INFO
-
-# @app.route('/map.json')
-# def map_info():
-#     """JSON information about bears."""
-
-#     map_listing = {
-#         listing.marker_id: {
-#             "bearId": bear.bear_id,
-#             "gender": bear.gender,
-#             "birthYear": bear.birth_year,
-#             "capYear": ooh.cap_year,
-#             "capLat": ooh.cap_lat,
-#             "capLong": ooh.cap_long,
-#             "collared": bear.collared.lower()
-#         }
-#         for bear in Bear.query.limit(50)}
-
-#     return jsonify(bears)
 
 
 

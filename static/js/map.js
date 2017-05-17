@@ -19,6 +19,7 @@ function initMap() {
 
 
 
+
   var nearSF = new google.maps.LatLng(37.594, -122.200)
   var marker = new google.maps.Marker({
       position: nearSF,

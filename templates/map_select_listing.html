@@ -13,6 +13,31 @@
 
 
 {% block content %}
+
+
+      <!-- first text the above and make sure in source that all dizs are showing for data -->
+
+    {% for listing in zipcode_listings %}
+      <div id=listing{{ listing.listing_id }}  class=marker-div data-business={{ listing.business }} data-address={{ listing.address }} data-lat={{ listing.lat }} data-lng={{ listing.lng }}></div> 
+
+          <script>  
+              var lat = $('#listing {{ listing.listing_id }} ').data('lat');
+       
+              var marker = new google.maps.Marker( {
+                  location : {lat: lat , lng: lng},
+                  map : map
+                  })
+          </script>
+
+    {% endfor %}
+
+
+
+
+
+
+
+
     <div id="diana-map" ></div>
 
 
@@ -39,9 +64,5 @@
         </form>
   </div>
 
-
-    <ul>
-
-    </ul>
     
 {% endblock %}

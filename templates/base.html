@@ -1,12 +1,15 @@
 <!doctype html>
 <html>
 <head>
+    <script src="http://code.jquery.com/jquery.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/
     3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <link href='http://fonts.googleapis.com/css?family=Raleway:100,700'
           rel='stylesheet'>
-    <!-- <link href="/static/maps.css" rel="stylesheet"> -->
+  <!--   <link href="/static/maps.css" rel="stylesheet"> -->
+    <link href="/static/css/all.css" rel="stylesheet">
+
     {% block head %}
     {% endblock %}
 
@@ -15,27 +18,19 @@
 </head>
 <body>
 
-<!-- Ratings
+  <hr>
 
-{% if "user_id" in session %}
-    <a href="/logout">Logout</a>
-{% else %}
-    <a href="/login">Login</a>
-{% endif %} -->
+  {% for flash in get_flashed_messages() %}
+    {{ flash }}
+  {% endfor %}
 
-<hr>
+  {% block content %}
+  <!--     Put your body here. -->
+  {% endblock %}
 
-{% for flash in get_flashed_messages() %}
-  {{ flash }}
-{% endfor %}
-
-{% block content %}
-<!--     Put your body here. -->
-{% endblock %}
-
-      <script src="http://code.jquery.com/jquery.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/
-      3.3.7/js/bootstrap.min.js"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/
+    3.3.7/js/bootstrap.min.js"></script>
 
 </body>
 </html>

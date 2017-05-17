@@ -11,22 +11,21 @@
 
 <h1>OOH Marketing</h1>
 
-    <div id="zipcode_search">
-        <h1> Start Advertising</h1>
-        <form action="/zipcode_search" method="GET">
-            Enter in a Zipcode:<br>
-           	<input type="text" name="zipcode" required>
-            <br>
-            <input type="submit" name="refine_search">
-        </form>
+      <h1>Search by Zipcode</h1>
 
-  <!--   Zipcode<br>
-            <input type="text" name="zipcode" required><br>
+	  <form action="/search_zipcode" method="GET">
+	  	<label>Enter zipcode:
+	  	<input type="text" name="zipcode"></input></label>
+	  	<input type="submit" value="Submit">
+	  </form>
 
-      I want the user to input a Zipcode and refine data to 10 miles aroudn that zip
- -->
+
 	<br>
 	<br>
+	<br>
+	<br>
+	<h1>Create a Listing</h1>
+
 	<button onclick="window.location.href='/new_listing'">Create A New Listing!</button>
 
 
