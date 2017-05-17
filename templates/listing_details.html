@@ -1,0 +1,73 @@
+<!-- this will be a generic page that will be populated with whatever listing_id infor the user clicks on.... -->
+
+{% extends 'base.html' %}
+{% block content %}
+
+  <h1>Listing Info</h1>
+
+  <div>
+            Business Name<br>
+            <input type="text" name="business" required><br>
+
+            Phone<br>
+            <input type="text" name="phone" required><br>
+
+            Address<br>
+            <input type="text" name="address" required><br>
+
+            Zipcode<br>
+            <input type="text" name="zipcode" required><br>
+
+            Advertisement Space Dimensions:<br>
+            Height: <input type="text" name="height" required><br>
+            Width: <input type="text" name="width" required><br>
+
+            Photo<br>
+            <input type="text" name="photo"><br>
+
+            Description<br>
+            <input type="text" name="description">
+
+            <br>
+            <br>
+
+
+<!-- SOMEWHERE  on this page there will be a CALENDAR API that show availability -->
+
+
+	<div id="search_listings">
+        <h1> Select This Listing</h1>
+        <form action="/book_listing" method="GET">
+
+            Date Range: <br>
+            Start:<input type="text" name="start_date" required>
+            End:<input type="text" name="end_date" required><br>
+            <br>
+
+            Ad Dimensions: <br>
+            Height:<input type="text" name="ad_height" required>
+            Width:<input type="text" name="ad_width" required><br>
+
+            Price:<br>
+            Total to book:<input type="text" name="min_price" required>
+<!--             dynamically generated based on the above entries -->
+            <br>
+
+            <br>
+            <br>
+            <input type="submit" name="book_listing" value="Book!">
+        </form>
+
+	</div>
+
+
+<!-- 
+ When the advertiser selects to BOOK listing -  a pop up will show that says "Owner has been notified of you interest in this booking from date range : ____ to _____. They will confirm/deny within 1-2 days. Once the cinfirmation in selected YOU will receive an email with their contact information to complete the transaction." 
+ 
+ CANCEL BOOKING REQUEST
+ START A NEW SEARCH
+ RETURN TO LIST OF LISTINGS PAGE
+ ACCOUNT INFO
+ -->
+
+{% endblock %}

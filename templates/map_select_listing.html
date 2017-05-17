@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block head %}
+
+  <h1>Listings by Zipcode</h1>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBywdmqR6C_Nc1Cq0BS65r4KX0Ai2AUZ14"></script>
+   <!--  <script src="https://code.jquery.com/jquery.js"></script> -->
+   <!--  <script src="/static/js/mapstyles.js"></script> -->
+    <style> #diana-map {height:500px; width:500px;} </style>
+    <script src="/static/js/map.js"></script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div id="diana-map" ></div>
+
+
+    <div id="search_listings">
+        <h1> Filter Your Search</h1>
+        <form action="/refine_search" method="GET">
+            Price Range:<br>
+            Min<input type="text" name="min_price" required>
+            Max<input type="text" name="max_price" required><br>
+            <br>
+
+            Date Range: <br>
+            Start:<input type="text" name="start_date" required>
+            End:<input type="text" name="end_date" required><br>
+            <br>
+
+            Ad Dimensions: <br>
+            Height:<input type="text" name="ad_height" required>
+            Width:<input type="text" name="ad_width" required><br>
+
+            <br>
+            <br>
+            <input type="submit" name="refine_search">
+        </form>
+  </div>
+
+
+    <ul>
+
+    </ul>
+    
+{% endblock %}

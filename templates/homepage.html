@@ -3,13 +3,32 @@
 
 <h1>OOH Marketing</h1>
 
-<h2></h2>
-<p><a href="/new_user">Create An Account</a></p>
 
-<h2></h2>
-<p><a href="/login_user">Login to An Account</a></p>
+
+<button onclick="window.location.href='/new_user'">Create An Account</button>
+<br>
+<button onclick="window.location.href='/new_listing'">Create A Listing</button>
+
+
+<div id="login_user">
+        <h1>Login: </h1>
+        <form action="/process_login" method="POST">
+
+            Email<br>
+            <input type="text" name="email" required><br>
+
+            Password<br>
+            <input type="text" name="password" required><br>
+
+            <br>
+            <input type="submit" name="login_user">
+        </form>
+	</div>
 
 <h2>Users</h2>
 <p><a href="/view_users">View all users</a></p>
+
+<h2>Listings</h2>
+<p><a href="/view_listing">View all listings</a></p>
 
 {% endblock %}

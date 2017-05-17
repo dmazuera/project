@@ -22,7 +22,7 @@ class User(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=False)
-    password = db.Column(db.Text, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     is_activated = db.Column(db.Boolean, default=False)
     picture = db.Column(db.String(200)) #url profile pics
     description = db.Column(db.Text)
@@ -50,13 +50,11 @@ class Listings(db.Model):
     phone = db.Column(db.String(64), nullable=False)
     address = db.Column(db.String(1000), nullable=False)
     zipcode = db.Column(db.String(64), nullable=False)
-    lat = db.Column(db.Integer)
-    lng = db.Column(db.Integer)
-    height_min = db.Column(db.Integer)
+    lat = db.Column(db.Float, nullable=False)
+    lng = db.Column(db.Float, nullable=False)
     height_max = db.Column(db.Integer)
-    width_min = db.Column(db.Integer)
     width_max = db.Column(db.Integer)
-    image = db.Column(db.String(200))
+    image = db.Column(db.String(1000))
     
     # Define relationship to owner
     owner = db.relationship("User", backref="listings")
@@ -87,7 +85,7 @@ class Rental_Records(db.Model):
     image = db.Column(db.String(200))
     
     # Define relationship to owner, advertiser, and listing
-    listing = db.relationship("Listing", backref="rentals")
+    listing = db.relationship("Listings", backref="rentals")
     advertiser = db.relationship("User", backref="rentals")
 
     def __repr__(self):

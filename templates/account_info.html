@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+  <h1>Account Info</h1>
+
+<button onclick="window.location.href='/new_user'">User Info</button>
+<br>
+<button onclick="window.location.href='/new_listing'">Listings Posted</button>
+<!-- option to delete listing  -->
+
+<button onclick="window.location.href='/purchase_history'">Purchase History</button>
+<br>
+<button onclick="window.location.href='/delete_account'">Delete Account</button>
+
+{% endblock %}
+
+
+<!-- Here add the buttons for History, User info, Listings, delete account.
+
+** could also be a drop down instead of a whole new page *** -->
+
+
+<!-- 
+ No Need to make it a seperate HTML Page
+  Use JS to have a left hand bar - and hold all information about an account in this HTML
+  Includes: 
+  		User info
+  		History purchases
+  		Listings owned
+  		Delete account. -->

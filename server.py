@@ -1,9 +1,11 @@
 from jinja2 import StrictUndefined
 
-from flask import Flask, jsonify, render_template, request, flash, redirect
+from flask import Flask, jsonify, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model_project import connect_to_db, db, User
+from model_project import connect_to_db, db, User, Listings, Rental_Records
+import json
+
 
 
 app = Flask(__name__)
@@ -16,6 +18,13 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
+###################################################
+
+###################################################
+
+
+
+
 
 @app.route('/')
 def index():
@@ -24,6 +33,86 @@ def index():
     return render_template("homepage.html")
 
 
+
+###################################################
+
+#LOGIN 
+
+@app.route('/login', methods=["POST"])
+def login_form():
+    """     """
+
+    return render_template("homepage.html")
+
+
+
+@app.route('/process_login', methods=["POST"])
+def process_login():
+    """      """
+
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = User.query.filter_by(email=email).first()
+
+
+    if not user:
+        #if not user....
+        flash("YOU ARE NOT IN THE SYSTEM - please register")
+        return redirect("/")
+    else:
+        if password == user.password:
+            # login success
+            session["user_id"] = user.user_id
+            flash("Thank you for Logging In!")
+            return redirect("/entry_page")
+
+
+        elif password != user.password:
+             flash("Incorrect password Try again")
+             return redirect("/")
+
+
+
+
+@app.route('/logout')
+def logout():
+    """Log out."""
+
+
+    del session["user_id"]
+    flash("Logged Out.")
+    return redirect("/")
+
+
+
+#######################################################################
+# ADD A SPLIT PANE 
+
+@app.route('/entry_page')
+def entry_page():
+    """     """
+
+    return render_template("entry_page.html")
+
+
+
+
+
+@app.route('/account_info')
+def account_info():
+    """View account info."""
+
+    return render_template("account_info.html")
+
+
+
+
+#######################################################################
+
+
+
+#NEW USER
 
 @app.route('/new_user')
 def new_user():
@@ -48,7 +137,8 @@ def process_new_user():
 
     # To add this customer to db:
     # 1. Create the user
-    user = User(fname=first_name, lname=last_name, phone=phone, email=email, password=password)
+    user = User(first_name=first_name, last_name=last_name, phone=phone, 
+                email=email, password=password)
 
     # 2. Add this customer to session
     db.session.add(user)
@@ -66,11 +156,191 @@ def process_new_user():
 
 
 
+#NEW LISTING
+ 
+@app.route('/new_listing')
+def new_listing():
+    """Create a listing page."""
+
+    return render_template("add_listing.html")
+
+
+
+@app.route('/process_new_listing', methods=['POST'])
+def process_new_listing():
+    """Process new user to User DB."""
+
+    # Get form variables
+    business = request.form["business"]
+    phone = request.form["phone"]
+    address = request.form["address"]
+    zipcode = request.form["zipcode"]
+    height_max = request.form["height"]
+    width_max = request.form["width"]
+    # description = request.form["description"]
+
+    
+    # To add this customer to db:
+    # 1. Create the user
+    listing = Listings(business=business, phone=phone, address=address, zipcode=zipcode, 
+                       height_max=height_max, width_max=width_max)
+
+    # 2. Add this customer to session
+    db.session.add(listing)
+
+    # 3. Commit the changes
+    db.session.commit()
+
+    # 4. Display a flash message to confirm user added
+    flash("Listing added successfully!!!")
+
+    return redirect("/")
+
+
+##########################################################################
+# HALF PAGE MAP --- other half SEARCH
+
+@app.route('/zipcode_search')
+def zipcode_search():
+    """Show map of SF with search functionality on page."""
+
+    DO A QUERY to get all lat long
+That will returna list of results
+  use that list and pass it into my map
+
+    markers = db.session.query
+
+    db.session.
+
+
+
+
+    return render_template("map_select_listing.html")
+
+
+
+@app.route('/refine_search')
+def refine_search():
+    """Show map of SF with NEW refined search filters."""
+
+    return render_template("map_refined_search.html")
+
+
+@app.route('/listing_details')
+def listing_details():
+    """Listing clicked. Show info and scheduling about listing."""
+
+    return render_template("listing_details.html")
+
+
+
+@app.route('/book_listing')
+def book_listing():
+    """Advertiser interested in Booking. Send an email to the owner of the listing to confirm or deny."""
+
+    return render_template("listing_details.html")
 
 
 
 
 
+#TALKING TO DATA BASE TO RETRIEVE INFO
+
+# @app.route('/map.json')
+# def map_info():
+#     """JSON information about bears."""
+
+#     map_listing = {
+#         listing.marker_id: {
+#             "bearId": bear.bear_id,
+#             "gender": bear.gender,
+#             "birthYear": bear.birth_year,
+#             "capYear": ooh.cap_year,
+#             "capLat": ooh.cap_lat,
+#             "capLong": ooh.cap_long,
+#             "collared": bear.collared.lower()
+#         }
+#         for bear in Bear.query.limit(50)}
+
+#     return jsonify(bears)
+
+
+
+##########################################################################
+
+#USER LIST 
+
+#homepage has a link that hgets user to user/list page
+@app.route("/view_users")
+def user_list():
+    """Show list of users."""
+
+    users = User.query.all()
+    return render_template("user_list.html", users=users)
+
+
+# USER PAGE
+@app.route("/users/<int:user_id>")
+def user_detail(user_id):
+    """Show info about user."""
+
+    user = User.query.get(user_id)
+    return render_template("user.html", user=user)
+
+
+############################################################################
+
+#LISTING LIST
+@app.route("/view_listing")
+def listings_list():
+    """Show list of listings."""
+
+    listings = Listings.query.order_by('listing_id').all()
+    return render_template("listings_list.html",
+                            listings=listings)
+
+
+#### NOT WORKING for some reason ^^
+
+# @app.route("/melons")
+# def list_melons():
+#     """Return page showing all the melons ubermelon has to offer"""
+
+#     melon_list = melons.get_all()
+#     return render_template("all_melons.html",
+#                            melon_list=melon_list)
+
+
+
+
+
+@app.route("/listings/<int:listing_id>")
+def listing_detail(listing_id):
+    """Show info about movie.
+    If a user is logged in, let them add/edit a rating.
+    """
+    listing_id = Listings.query.get(listing_id)
+
+    user_id = session.get("user_id")
+
+    if user_id:
+        user_rating = Rating.query.filter_by(
+            listing_id=listing_id, user_id=user_id).first()
+
+    else:
+        user_rating = None
+
+    return render_template("listing.html",
+                           business=business,
+                           user_rating=user_rating)
+
+
+
+
+
+
+
+####################################################################
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

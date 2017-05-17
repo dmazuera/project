@@ -1,0 +1,36 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+
+<button onclick="window.location.href='/account_info'">View Account Info</button>
+
+<div id="logout_user">
+<button onclick="window.location.href='/logout'">Logout</button>
+	</div>
+
+<h1>OOH Marketing</h1>
+
+    <div id="zipcode_search">
+        <h1> Start Advertising</h1>
+        <form action="/zipcode_search" method="GET">
+            Enter in a Zipcode:<br>
+           	<input type="text" name="zipcode" required>
+            <br>
+            <input type="submit" name="refine_search">
+        </form>
+
+  <!--   Zipcode<br>
+            <input type="text" name="zipcode" required><br>
+
+      I want the user to input a Zipcode and refine data to 10 miles aroudn that zip
+ -->
+	<br>
+	<br>
+	<button onclick="window.location.href='/new_listing'">Create A New Listing!</button>
+
+
+
+
+
+{% endblock %}

@@ -1,4 +1,13 @@
 
+   <!--    {% for listings in listings %}
+          <li>
+              <a href="/listings/{{ listings.listing_id }}">
+                {{ listings.listing_id }} ({{ listings.listing_id }})
+              </a>
+          </li>
+      {% endfor %} -->
+
+
 
 @app.route('/register', methods=['GET'])
 def register_form():

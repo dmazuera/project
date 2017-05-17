@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block head %}
+
+  <h1>Refined Search</h1>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBywdmqR6C_Nc1Cq0BS65r4KX0Ai2AUZ14"></script>
+   <!--  <script src="https://code.jquery.com/jquery.js"></script> -->
+   <!--  <script src="/static/js/mapstyles.js"></script> -->
+    <style> #diana-map {height:500px; width:500px;} </style>
+    <script src="/static/js/map.js"></script>
+
+{% endblock %}
+
+
+{% block content %}
+    <div id="diana-map" ></div>
+
+
+    <div id="show_listings">
+        <h1> Listings Close By</h1>
+
+            <button onclick="window.location.href='/listing_details'">Listing #1</button>
+            <br>
+            <button onclick="window.location.href='/listing_details'">Listing #2</button>
+            <br>
+            <button onclick="window.location.href='/listing_details'">Listing #3</button>
+
+            <br>
+            <br>
+
+            <!-- the above listings will each direct to their specific listing_id page! -->
+       
+  </div>
+
+
+    <ul>
+
+    </ul>
+    
+{% endblock %}
