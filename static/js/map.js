@@ -31,6 +31,33 @@ function initMap() {
   });
 
 
+
+   // Retrieving the information with AJAX
+  $.get('/listings.json', function (listings) {
+
+    var listing, marker, html;
+
+      for (var key in listings) {
+          listing = listings[key];
+
+           html = (
+              '<div class="window-content">' +
+                  '<img src="/static/img/star.png" alt="listing" style="width:150px;" class="thumbnail">' +
+                  '<p><b>Business Name: </b>' + listing.business + '</p>' +
+                  '<p><b>Address: </b>' + listing.address + '</p>' +
+                  '<p><b>Ad Height: </b>' + listing.heightmax + '</p>' +
+                  '<p><b>Ad Width: </b>' + listing.widthmax + '</p>' +
+                  '<p><b>Location: </b>' + marker.position + '</p>' +
+              '</div>');
+
+           bindInfoWindow(marker, map, infoWindow, html);
+      }
+
+  });
+
+
+
+
   function bindInfoWindow(marker, map, infoWindow, html) {
       google.maps.event.addListener(marker, 'click', function () {
           infoWindow.close();

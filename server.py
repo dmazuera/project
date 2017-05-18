@@ -214,6 +214,37 @@ def search_zipcode():
 
 
 
+@app.route('/listings.json')
+def listing_info():
+    """JSON information about bears."""
+
+    listings = {
+        listing.listing_id: {
+            "ownerId": listing.owner_id,
+            "business": listing.business,
+            "phone": listing.phone,
+            "address": listing.address,
+            "zipcode": listing.zipcode,
+            "adLat": listing.lat,
+            "adLong": listing.long,
+            "heightmax": listing.height_max,
+            "widthmax": listing.width_max,
+            "image": listing.image,
+        }
+        for listing in Listings.query.limit(50)}
+
+    return jsonify(listings)
+
+
+
+
+
+
+
+
+
+
+
 ####????????????????????????????
 
 @app.route('/refine_search')
