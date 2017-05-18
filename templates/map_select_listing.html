@@ -21,7 +21,8 @@
       <div id=listing{{ listing.listing_id }}  class=marker-div data-business={{ listing.business }} data-address={{ listing.address }} data-lat={{ listing.lat }} data-lng={{ listing.lng }}></div> 
 
           <script>  
-              var lat = $('#listing {{ listing.listing_id }} ').data('lat');
+              var lat = $('#listing{{ listing.listing_id }}').data('lat');
+              var lng = $('#listing{{ listing.listing_id }}').data('lng');
        
               var marker = new google.maps.Marker( {
                   location : {lat: lat , lng: lng},
@@ -39,7 +40,7 @@
 
 
     <div id="diana-map" ></div>
-
+<!-- 
 
     <div id="search_listings">
         <h1> Filter Your Search</h1>
@@ -62,7 +63,45 @@
             <br>
             <input type="submit" name="refine_search">
         </form>
+  </div> -->
+
+
+  <div>
+    <h1> Filter Your Search</h1>
+        <form id="refine-search">
+
+            Price Range: <br>
+            Min:<input type="text" size="2" name="min_price" id="min_price" required>
+            Max:<input type="text" size="2" name="max_price" id="max_price" required><br>
+            <br>
+
+            Date Range: <br>
+            Start:<input type="text" size="2" name="start_date" id="start_date" required>
+            End:<input type="text" size="2" name="end_date" id="end_date" required><br>
+            <br>
+
+            Ad Dimensions: <br>
+            Height:<input type="text" size="2" name="ad_height" id="ad-height" required>
+            Width:<input type="text" size="2" name="ad_width" id="ad-width" required><br>
+
+            <br>
+            <span id="result">&nbsp;</span>
+       <!--      RESULTS this time will NOT be a BOX but will make the MAP MARKERS CHANGE! -->
+            <br>
+          <input type="submit" id="filter_search" name="filter_search" class="btn btn-primary input-sm" value="Filter">
+           
+        </form>
+
+
   </div>
+<!-- <script src="http://code.jquery.com/jquery.js"></script> -->
+<script src="static/js/map-refine.js"></script>
 
     
+    I want for the page to dynamically show the listings information..... 
+    - or - 
+    I can jst show a huge map with info in the Hover Over markers... 
+
+
+
 {% endblock %}

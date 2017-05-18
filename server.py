@@ -214,13 +214,16 @@ def search_zipcode():
 
 
 
-
+####????????????????????????????
 
 @app.route('/refine_search')
 def refine_search():
     """Show map of SF with NEW refined search filters."""
 
     return render_template("map_refined_search.html")
+
+#?????????????????????????????????
+
 
 
 @app.route('/listing_details')
@@ -263,7 +266,10 @@ def user_detail(user_id):
     return render_template("user.html", user=user)
 
 
+
+
 ############################################################################
+
 
 #LISTING LIST
 @app.route("/view_listing")
@@ -273,19 +279,6 @@ def listings_list():
     listings = Listings.query.order_by('listing_id').all()
     return render_template("listings_list.html",
                             listings=listings)
-
-
-#### NOT WORKING for some reason ^^
-
-# @app.route("/melons")
-# def list_melons():
-#     """Return page showing all the melons ubermelon has to offer"""
-
-#     melon_list = melons.get_all()
-#     return render_template("all_melons.html",
-#                            melon_list=melon_list)
-
-
 
 
 
@@ -308,7 +301,6 @@ def listing_detail(listing_id):
     return render_template("listing.html",
                            business=business,
                            user_rating=user_rating)
-
 
 
 
