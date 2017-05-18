@@ -21,15 +21,10 @@ function initMap() {
   });
 
 
-
-
-  var nearSF = new google.maps.LatLng(37.594, -122.200)
-  var marker = new google.maps.Marker({
-      position: nearSF,
-      map: map,
-      title: 'Hover text'
+  var infoWindow = new google.maps.InfoWindow({
+      width: 150
   });
-
+ 
 
 
    // Retrieving the information with AJAX
@@ -40,14 +35,26 @@ function initMap() {
       for (var key in listings) {
           listing = listings[key];
 
-           html = (
+          // Define the marker
+          marker = new google.maps.Marker({
+              position: new google.maps.LatLng(listing.Lat, listing.Long),
+              map: map,
+              title: 'Listing Name: ' + listing.business,
+              icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+          })
+
+          // Define the content of the infoWindow
+          html = (
               '<div class="window-content">' +
-                  '<img src="/static/img/star.png" alt="listing" style="width:150px;" class="thumbnail">' +
+                  '<img src="google-maps-demo/static/img/polarbear.jpg" alt="listing" style="width:150px;" class="thumbnail">' +
                   '<p><b>Business Name: </b>' + listing.business + '</p>' +
                   '<p><b>Address: </b>' + listing.address + '</p>' +
                   '<p><b>Ad Height: </b>' + listing.heightmax + '</p>' +
                   '<p><b>Ad Width: </b>' + listing.widthmax + '</p>' +
                   '<p><b>Location: </b>' + marker.position + '</p>' +
+                  '<p>Attribution: <a href="/new_listing">'+
+                  'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+                              '</p>'+
               '</div>');
 
            bindInfoWindow(marker, map, infoWindow, html);

@@ -4,7 +4,7 @@
   <h1>Listings by Zipcode</h1>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBywdmqR6C_Nc1Cq0BS65r4KX0Ai2AUZ14"></script>
-   <!--  <script src="https://code.jquery.com/jquery.js"></script> -->
+    <script src="https://code.jquery.com/jquery.js"></script>
    <!--  <script src="/static/js/mapstyles.js"></script> -->
     <style> #diana-map {height:500px; width:500px;} </style>
     <script src="/static/js/map.js"></script>
@@ -15,7 +15,7 @@
 {% block content %}
 
 
-      <!-- first text the above and make sure in source that all dizs are showing for data -->
+      <!-- first test the above and make sure in source that all dizs are showing for data -->
 
     {% for listing in zipcode_listings %}
       <div id=listing{{ listing.listing_id }}  class=marker-div data-business={{ listing.business }} data-address={{ listing.address }} data-lat={{ listing.lat }} data-lng={{ listing.lng }}></div> 
@@ -31,10 +31,6 @@
           </script>
 
     {% endfor %}
-
-
-
-
 
 
 
