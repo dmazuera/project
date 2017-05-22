@@ -63,7 +63,7 @@ def process_login():
     else:
         if password == user.password:
             # login success
-            session["user_id"] = user.user_id
+            session["user"] = user.user_id
             flash("Thank you for Logging In!")
             return redirect("/entry_page")
 
@@ -71,6 +71,7 @@ def process_login():
         elif password != user.password:
              flash("Incorrect password Try again")
              return redirect("/")
+
 
 
 
@@ -96,14 +97,6 @@ def entry_page():
     return render_template("entry_page.html")
 
 
-
-
-
-@app.route('/account_info')
-def account_info():
-    """View account info."""
-
-    return render_template("account_info.html")
 
 
 
@@ -154,6 +147,102 @@ def process_new_user():
 
 
 
+#???????????????????????????????????????????/
+
+@app.route('/account_page')
+def account_page(): 
+    """" """
+    user_id = session.get("user")
+    user = User.query.get(user_id)
+
+    #I am passing the whole object "user" to this page... I can then on the page take out of "user" all the attributes
+    return render_template("user_info.html", user=user)
+
+
+
+# USER PAGE
+@app.route("/users/<int:user_id>")
+def user_info(user_id):
+    """Show info about user."""
+
+    user = User.query.get(user_id)
+    return render_template("user.html", user=user)
+
+#??????????????????????????????????????????????????
+
+##########################################################################
+
+#USER  
+
+#homepage has a link that hgets user to user/list page
+@app.route("/view_users")
+def user_list():
+    """Show list of users."""
+
+    users = User.query.all()
+    return render_template("user_list.html", users=users)
+
+
+
+@app.route("/user/<int:user_id>", methods=['GET'])
+def user_detail(user_id):
+    """Show info about user.
+    If a user is logged in, let them add/edit their page.
+    """
+
+    user = User.query.get(user_id)
+    user_id = session.get("user_id")
+
+    #below will be all the things a user can SEE that is THEIR own on the PAGE
+    if user_id:
+        first_name = User.query.filter_by(
+            movie_id=movie_id, user_id=user_id).first()
+
+    else:
+        user_rating = None
+
+    #passing the items a user will be able to see that is THERE OWN on the HTML page
+    return render_template("user_info.html",
+                           user=user,
+                           user_rating=user_rating)
+
+
+
+
+@app.route("/user/<int:user_id>", methods=['POST'])
+def user_edit_process(user_id):
+    """Add/edit user info."""
+
+    # Get form variables
+    score = int(request.form["score"])
+
+    user_id = session.get("user_id")
+    if not user_id:
+        raise Exception("No user logged in.")
+
+    rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first()
+
+    if rating:
+        rating.score = score
+        flash("Rating updated.")
+
+    else:
+        rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
+        flash("Rating added.")
+        db.session.add(rating)
+
+    db.session.commit()
+
+    return redirect("/movies/%s" % movie_id)
+
+
+
+
+
+
+
+
+############################################################################s
 
 
 #NEW LISTING
@@ -200,8 +289,32 @@ def process_new_listing():
 ##########################################################################
 # HALF PAGE MAP --- other half SEARCH
 
+@app.route('/advertise')
+def advertise():
+    """Create a listing page."""
+
+    return render_template("map_select_listing.html")
+
+
+
 @app.route('/search_zipcode')
 def search_zipcode():
+    """Show map of SF with search functionality on page."""
+
+
+    zipcode = request.args.get("zipcode")
+
+    return render_template("map_select_listing.html",
+                            zipcode= zipcode)
+
+
+
+
+
+
+#USE TO GET OUT listings with the FILTERS!!! Mentioned by user.
+@app.route('/filter_search')
+def filter_search():
     """Show map of SF with search functionality on page."""
 
 
@@ -211,6 +324,8 @@ def search_zipcode():
 
     return render_template("map_select_listing.html",
                             zipcode_listings= zipcode_listings)
+
+
 
 
 
@@ -231,75 +346,12 @@ def listing_info():
             "widthmax": listing.width_max,
             "image": listing.image,
         }
-        for listing in Listings.query.limit(50)}
+        for listing in Listings.query.all()}
 
     return jsonify(listings)
 
 
 
-
-
-
-
-
-
-
-
-####????????????????????????????
-
-@app.route('/refine_search')
-def refine_search():
-    """Show map of SF with NEW refined search filters."""
-
-    return render_template("map_refined_search.html")
-
-#?????????????????????????????????
-
-
-
-@app.route('/listing_details')
-def listing_details():
-    """Listing clicked. Show info and scheduling about listing."""
-
-    return render_template("listing_details.html")
-
-
-
-@app.route('/book_listing')
-def book_listing():
-    """Advertiser interested in Booking. Send an email to the owner of the listing to confirm or deny."""
-
-    return render_template("listing_details.html")
-
-
-
-
-
-##########################################################################
-
-#USER LIST 
-
-#homepage has a link that hgets user to user/list page
-@app.route("/view_users")
-def user_list():
-    """Show list of users."""
-
-    users = User.query.all()
-    return render_template("user_list.html", users=users)
-
-
-# USER PAGE
-@app.route("/users/<int:user_id>")
-def user_detail(user_id):
-    """Show info about user."""
-
-    user = User.query.get(user_id)
-    return render_template("user.html", user=user)
-
-
-
-
-############################################################################
 
 
 #LISTING LIST
@@ -315,23 +367,38 @@ def listings_list():
 
 @app.route("/listings/<int:listing_id>")
 def listing_detail(listing_id):
-    """Show info about movie.
+    """Show info about listing. (copied from Ratings -- info about movie**)
     If a user is logged in, let them add/edit a rating.
     """
     listing_id = Listings.query.get(listing_id)
 
     user_id = session.get("user_id")
 
-    if user_id:
-        user_rating = Rating.query.filter_by(
-            listing_id=listing_id, user_id=user_id).first()
+    # if the user is interested in BOOKING... send the user_id, owner_id and listing_id to Rental Records.
 
-    else:
-        user_rating = None
 
-    return render_template("listing.html",
-                           business=business,
-                           user_rating=user_rating)
+
+
+    # if user_id:
+    #     user_rating = Listings.query.filter_by(
+    #         listing_id=listing_id, user_id=user_id).first()
+
+    # else:
+    #     user_rating = None
+
+    return render_template("listing_details.html", listing=listing_id,
+                                                   user_id=user_id)
+
+
+
+
+
+@app.route('/book_listing')
+def book_listing():
+    """Advertiser interested in Booking. Send an email to the owner of the listing to confirm or deny."""
+
+    return render_template("listing_EMAIL.html") #????????
+
 
 
 

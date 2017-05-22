@@ -1,67 +1,53 @@
 {% extends 'base.html' %}
 {% block head %}
 
-  <h1>Listings by Zipcode</h1>
+
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBywdmqR6C_Nc1Cq0BS65r4KX0Ai2AUZ14"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
    <!--  <script src="/static/js/mapstyles.js"></script> -->
     <style> #diana-map {height:500px; width:500px;} </style>
     <script src="/static/js/map.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 
 {% endblock %}
 
-
 {% block content %}
 
+  <h1>Listings</h1>
+      <h2> Select a Zipcode: </h2>
 
-      <!-- first test the above and make sure in source that all dizs are showing for data -->
-
-    {% for listing in zipcode_listings %}
-      <div id=listing{{ listing.listing_id }}  class=marker-div data-business={{ listing.business }} data-address={{ listing.address }} data-lat={{ listing.lat }} data-lng={{ listing.lng }}></div> 
-
-          <script>  
-              var lat = $('#listing{{ listing.listing_id }}').data('lat');
-              var lng = $('#listing{{ listing.listing_id }}').data('lng');
-       
-              var marker = new google.maps.Marker( {
-                  location : {lat: lat , lng: lng},
-                  map : map
-                  })
-          </script>
-
-    {% endfor %}
+           Enter zipcode:
+        <input name="searchTxt_name" type="text" maxlength="512" id="searchTxt" class="searchField"/>
+        <button id="searchButton">Submit</button>
+        <br>
+        <br>
+        <!-- <input id = "searchButton" type="submit" value="submit"/> -->
 
 
+    <script>
+        var map;
+
+        $("#searchButton").on("click", function(){
+            zipcode_zoom( document.getElementById("searchTxt").value)
+
+
+
+
+        });
+        // $("#searchButton").on("click",console.log("PIZZA"));
+        // $("#searchButton").on("click",function(){console.log("HUT")});     
+
+
+    </script>
 
 
     <div id="diana-map" ></div>
-<!-- 
-
-    <div id="search_listings">
-        <h1> Filter Your Search</h1>
-        <form action="/refine_search" method="GET">
-            Price Range:<br>
-            Min<input type="text" name="min_price" required>
-            Max<input type="text" name="max_price" required><br>
-            <br>
-
-            Date Range: <br>
-            Start:<input type="text" name="start_date" required>
-            End:<input type="text" name="end_date" required><br>
-            <br>
-
-            Ad Dimensions: <br>
-            Height:<input type="text" name="ad_height" required>
-            Width:<input type="text" name="ad_width" required><br>
-
-            <br>
-            <br>
-            <input type="submit" name="refine_search">
-        </form>
-  </div> -->
 
 
+  
+
+  <!--           <form action="/search_zipcode" method="GET"> -->
   <div>
     <h1> Filter Your Search</h1>
         <form id="refine-search">
@@ -89,14 +75,28 @@
         </form>
 
 
-  </div>
-<!-- <script src="http://code.jquery.com/jquery.js"></script> -->
-<script src="static/js/map-refine.js"></script>
 
-    
-    I want for the page to dynamically show the listings information..... 
-    - or - 
-    I can jst show a huge map with info in the Hover Over markers... 
+     <script>
+        var map;
+
+        $("#filter_search").on("click", function(){
+            filter_by_price( document.getElementById("min_price").value, document.getElementById("max_price").value)
+        });
+
+
+    </script>
+
+
+
+
+
+
+  </div>
+  <script> google.maps.event.addDomListener(window, 'load', initMap); </script>
+<!-- <script src="http://code.jquery.com/jquery.js"></script> -->
+<!-- <script src="static/js/map-refine.js"></script> -->
+
+
 
 
 

@@ -11,7 +11,7 @@ def load_users():
 
     print "Users"
 
-    for i, row in enumerate(open("test_userdata.txt")):
+    for i, row in enumerate(open("user_data.csv")):
         row = row.rstrip()
         user_id, username, first_name, last_name, email, password, phone, ip_address, city, is_activated= row.split(",")
 
@@ -35,10 +35,13 @@ def load_listings():
 
     print "Listings"
 
-    for i, row in enumerate(open("test_data.txt")):
+    for i, row in enumerate(open("seed_data.txt")):
         row = row.rstrip()
 
-        business, address, yelp_url, phone, lat, lng  = row.split("|")
+        try:
+            business, address, yelp_url, phone, lat, lng  = row.split("|")
+        except ValueError:
+            import pdb; pdb.set_trace()
 
         zipcode = address[-5:]   
         lat = lat[:-3]
@@ -79,8 +82,8 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
 
-    load_users()
-    load_listings()
+    # load_users()
+    # load_listings()
     # set_val_user_id()
 
  
