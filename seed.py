@@ -10,7 +10,6 @@ def load_users():
     """Load users from u.user into database."""
 
     print "Users"
-
     for i, row in enumerate(open("user_data.csv")):
         row = row.rstrip()
         user_id, username, first_name, last_name, email, password, phone, ip_address, city, is_activated= row.split(",")
@@ -23,18 +22,16 @@ def load_users():
                     is_activated=is_activated)
         
         db.session.add(user)
-
         if i % 100 == 0:
             print i
-
     db.session.commit()
+
 
 
 def load_listings():
     """Load movies from u.item into database."""
 
     print "Listings"
-
     for i, row in enumerate(open("seed_data.txt")):
         row = row.rstrip()
 
@@ -45,22 +42,45 @@ def load_listings():
 
         zipcode = address[-5:]   
         lat = lat[:-3]
-
+        #this is making a new Listing ROW!
         listings = Listings(business=business,
                       address=address,
                       zipcode=zipcode,
                       phone=phone,
                       lat=float(lat),
                       lng=float(lng))
-        
-        # owner_id = 
 
         db.session.add(listings)
-
         if i % 100 == 0:
             print i
-
     db.session.commit()
+
+
+
+def load_numbers():
+    """Load movies from u.item into database."""
+
+    print "Listings"
+    for i, row in enumerate(open("number_data.txt")):
+        row = row.rstrip()
+        #need to find the already made seeded table for listings and choose to fill in the "null" columns in THAT table
+        listing = Listings.query.filter_by(listing_id=(i+1)).one()
+
+        try:
+            price, height, width = row.split(" ")
+        except ValueError:
+            import pdb; pdb.set_trace()
+
+        #I dont need to make a new Listing row... instead sqlal is lettingme treatthe row already  as a object
+        listing.price = price
+        listing.height_max = height
+        listing.width_max = width
+        
+        if i % 100 == 0:
+            print i
+    db.session.commit() #I dont need to add.. since I am not creating a new row.. just updating :)
+
+
 
 
 
@@ -77,6 +97,7 @@ def set_val_Listing_id():
     db.session.execute(query, {'new_id': max_id + 1})
     db.session.commit()
 
+#_________________________________________________
 
 if __name__ == "__main__":
     connect_to_db(app)
@@ -84,6 +105,8 @@ if __name__ == "__main__":
 
     # load_users()
     # load_listings()
+    # load_numbers()
+
     # set_val_user_id()
 
  

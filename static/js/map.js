@@ -24,8 +24,6 @@ function initMap() {
   //******** NEW ***********
   // Adds map listener; updates map markers on changes to map once user
   // idles from map panning/zooming
-
-
   // map.addListener('idle', function() {
   //   // If the user is searching within a region use the map listener,
   //   // otherwise a single address search should not update
@@ -35,16 +33,13 @@ function initMap() {
   //     // then check search filters before returning listing results
   //       checkFilters();
   //     }
-
   // });
-
 
 
   var infoWindow = new google.maps.InfoWindow({
       width: 150
   });
     
-
 
    // Retrieving the information with AJAX
   $.get('/listings.json', function (listings) {
@@ -64,9 +59,8 @@ function initMap() {
               title: 'Listing Name: ' + listing.business,
               icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
           })
-          //To be used for clusters... need a list of markers.
-          markers.push(marker);
 
+          markers.push(marker);
           // Define the content of the infoWindow
           // hold off on image in a database
           html = (
@@ -87,6 +81,7 @@ function initMap() {
       var markerCluster = new MarkerClusterer(map, markers,
       {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
+      
       
   });
 
@@ -121,89 +116,75 @@ function zipcode_zoom(zipcode) {
 
 
 
-  //******** NEW *********** FROM SOURCE
+
+  //******** NEW *********** 
 
 // Gets filter values and requests the server for a database query on those values
-function checkFilters(){
+function filter_search(min, max, height, width){
   // Extract the map boundaries from geocoded location
-  var bounds = map.getBounds();
-  // if (bounds){
-  //   var geoBounds = JSON.stringify(bounds);
-  // // If no boundaries exist, use map viewport box from geocoded location
-  // } else {
-    var viewport = results[0].geometry.viewport;
-    var geoBounds = JSON.stringify(viewport);
-  // }
+    var bounds = map.getBounds();
+    var geoBounds = JSON.stringify(bounds);
 
+    console.log(min)
   // Grab filter values and send to server as an object
-  var priceFilter = $("#slider-range").slider("values");
-  var lowPrice = priceFilter[0];
-  var highPrice = priceFilter[1];
 
-  var bedroomFilter = $('#bedroom-filter').html();
-  if (bedroomFilter === 'Any') {
-    bedroomFilter = 0;
-  } else {
-    bedroomFilter = parseInt(bedroomFilter)
-  }
+  //If the values are undefined I need to pass in a 0... and pass a string that i can look out for.
+  //Make sure I test for undefined entries
 
-  var bathroomFilter = $('#bathroom-filter').html();
-  if (bathroomFilter === 'Any') {
-    bathroomFilter = 0;
-  } else {
-    bathroomFilter = parseInt(bathroomFilter)
-  }
+  var highPrice = parseInt(max);
+  var lowPrice = parseInt(min);
+  var height = parseInt(height);
+  var width = parseInt(width);
+   console.log(width)
 
   var filters = {'geoBounds': geoBounds,
                  'lowPrice': lowPrice, 
                  'highPrice': highPrice, 
-                 'bedroomFilter': bedroomFilter, 
-                 'bathroomFilter': bathroomFilter}
+                 'height': height, 
+                 'width': width}
+  console.log(filters)
+  console.log(geoBounds)
 
-  $.get('/listings.json', filters, addListingMarkers)
+  $.get('/filter_search.json', filters, addListingMarkers)
 }
 
 
-// // Shows user interaction map instructions
-// function zoomMapInstructions(){
-//   $('#map-notification').html('Zoom in on map to see listings for sale in the area.');
+
+
+
+// // For all locations for sale within the map boundaries,
+// // show markers for each location
+// function addListingMarkers(listings){
+//   deleteMarkers();
+//   for (var i=0; i < listings.length; i++){
+//     var listing = listings[i];
+//     var latitude = parseFloat(listing['latitude']);
+//     var longitude = parseFloat(listing['longitude']);
+
+//     // Creates a marker for each listing
+//     var marker = new google.maps.Marker({
+//       map: map,
+//       position: {lat: latitude, lng: longitude},
+//       details: listing,
+//       icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+//     });
+//     attachListener(marker, listing);
+
+//     // Stores each marker in global markers array
+//     if (!(markers.has(marker))){
+//       markers.add(marker);
+//     }
+//   }
 // }
 
 
-// // Hides user interaction map instructions
-// function clickMapInstructions(){
-//   $('#map-notification').html('Select a listing on the map to see more details.');
+// // Deletes all markers in the array by removing references to them
+// function deleteMarkers() {
+//   clearMarkers();
+//   markers.clear();
 // }
-
-
-// For all locations for sale within the map boundaries,
-// show markers for each location
-function addListingMarkers(listings){
-  deleteMarkers();
-  for (var i=0; i < listings.length; i++){
-    var listing = listings[i];
-    var latitude = parseFloat(listing['latitude']);
-    var longitude = parseFloat(listing['longitude']);
-
-    // Creates a marker for each listing
-    var marker = new google.maps.Marker({
-      map: map,
-      position: {lat: latitude, lng: longitude},
-      details: listing,
-      icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-    });
-    attachListener(marker, listing);
-
-    // Stores each marker in global markers array
-    if (!(markers.has(marker))){
-      markers.add(marker);
-    }
-  }
-}
-
 
 // google.maps.event.addDomListener(window, 'load', initMap);
-
 
 
 

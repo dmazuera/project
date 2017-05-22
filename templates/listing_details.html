@@ -6,6 +6,20 @@
   <h1>Listing Info</h1>
 
   <div>
+            
+            <h2>Basic Info: </h2>
+    <ul>
+      {% for listing in listings %}
+          <li>
+              <a href="/listings/{{ listings.listing_id }}">
+                {{ user.email }} ({{ user.user_id }})
+              </a>
+          </li>
+      {% endfor %}
+    </ul>
+
+
+
             Business Name<br>
             <input type="text" name="business" required><br>
 

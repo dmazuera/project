@@ -286,46 +286,6 @@ def process_new_listing():
     return redirect("/")
 
 
-##########################################################################
-# HALF PAGE MAP --- other half SEARCH
-
-@app.route('/advertise')
-def advertise():
-    """Create a listing page."""
-
-    return render_template("map_select_listing.html")
-
-
-
-@app.route('/search_zipcode')
-def search_zipcode():
-    """Show map of SF with search functionality on page."""
-
-
-    zipcode = request.args.get("zipcode")
-
-    return render_template("map_select_listing.html",
-                            zipcode= zipcode)
-
-
-
-
-
-
-#USE TO GET OUT listings with the FILTERS!!! Mentioned by user.
-@app.route('/filter_search')
-def filter_search():
-    """Show map of SF with search functionality on page."""
-
-
-    zipcode = request.args.get("zipcode")
-    zipcode_listings = Listings.query.filter(Listings.zipcode == zipcode).all()
-    #returns to map html all of the listings data matching that zipcode
-
-    return render_template("map_select_listing.html",
-                            zipcode_listings= zipcode_listings)
-
-
 
 
 
@@ -376,18 +336,90 @@ def listing_detail(listing_id):
 
     # if the user is interested in BOOKING... send the user_id, owner_id and listing_id to Rental Records.
 
-
-
-
     # if user_id:
     #     user_rating = Listings.query.filter_by(
     #         listing_id=listing_id, user_id=user_id).first()
-
     # else:
     #     user_rating = None
 
     return render_template("listing_details.html", listing=listing_id,
                                                    user_id=user_id)
+
+
+##########################################################################
+# HALF PAGE MAP --- other half SEARCH
+
+@app.route('/advertise')
+def advertise():
+    """Create a listing page."""
+
+    return render_template("map_select_listing.html")
+
+
+
+@app.route('/search_zipcode')
+def search_zipcode():
+    """Show map of SF with search functionality on page."""
+
+
+    zipcode = request.args.get("zipcode")
+
+    return render_template("map_select_listing.html",
+                            zipcode= zipcode)
+
+
+
+
+
+#USE TO GET OUT listings with the FILTERS!!! Mentioned by user.
+@app.route('/filter_search.json')
+def filter_search():
+    """Show map of SF with filters."""
+
+    bounds = json.loads(request.args.get('geoBounds'))
+    low_price = int(request.args.get('lowPrice'))
+    high_price = int(request.args.get('highPrice'))
+    height = float(request.args.get('height'))
+    width = float(request.args.get('width'))
+    
+    print "hi"
+    print "bounds"
+    print "height"
+    # Retrieves listings from db_queries
+    filtered_listings = find_all_listings(bounds, height, width, low_price, high_price)
+
+    return jsonify(filtered_listings)
+
+
+
+
+def find_all_listings(bounds, height, width, low_price, high_price):
+    """ Finds all the listings within the geocoded location range. """
+    
+    # Query for the listings in the database within the latitude and
+    # longitude bounds of the user's search with respect to any filters
+    listings = db.session.query(Listings).filter((bounds['west'] < Listings.lng),
+                                                 (bounds['east'] > Listings.lng), 
+                                                 (bounds['north'] > Listings.lat), 
+                                                 (bounds['south'] < Listings.lat), 
+                                                 (Listings.height >= height), 
+                                                 (Listing.width >= width), 
+                                                 (Listing.price >= low_price), 
+                                                 (Listing.price <= high_price)).all()
+
+    all_listings = []
+
+    for listing in listings:
+        all_listings.append({'response': 100,  # found listing response
+                                'latitude': listing.latitude,
+                                'longitude': listing.longitude,
+                                'city': listing.city,
+                                'state': listing.state,
+                                'zipcode': listing.zipcode,
+                                'price': listing.price,
+                                })
+
+    return all_listings
 
 
 

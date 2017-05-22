@@ -135,15 +135,11 @@ seed_file.close()
 
 
 
-# NEXT DO THIS!!!! -- instead of seeding my Tables from a file... I can seed directly from here. 
-# HOW?????
 
-#call the SQLAlchemy class to make a business record simiplar to "Load_users"
-# import model.py
-# from model.py import Listing , etc
 
-# listing = Listing()
-
+#For number data:
+for i in range(1001):
+    print (random.randrange(250,1500,2)), (random.randrange(5,20,3)), (random.randrange(10,40,3))
 
 
 

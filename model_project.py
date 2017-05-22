@@ -54,6 +54,7 @@ class Listings(db.Model):
     lng = db.Column(db.Float)
     height_max = db.Column(db.Integer)
     width_max = db.Column(db.Integer)
+    price= db.Column(db.Integer)
     image = db.Column(db.String(1000))
     
     # Define relationship to owner
@@ -82,6 +83,7 @@ class Rental_Records(db.Model):
     is_active = db.Column(db.Boolean, default=False) #function?
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
+    total_price = db.Column(db.Integer)
     image = db.Column(db.String(200))
     
     # Define relationship to owner, advertiser, and listing
