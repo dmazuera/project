@@ -15,37 +15,27 @@
           </li>
     </ul>
 
-
-
             Business Name:<br>
-            {{ listing.business }}
-            <br>
-            <br>
+            {{ listing.business }}<br><br>
+
             Phone:<br>
-            {{ listing.phone }}
-            <br>
-            <br>
+            {{ listing.phone }}<br><br>
+
             Address:<br>
-            {{ listing.address }}
-            <br>
-            <br>
+            {{ listing.address }}<br><br>
+
             Advertisement Space Dimensions:<br>
             Height: {{ listing.height_max }}<br>
-            Width: {{ listing.width_max }}<br>
-            <br>
-            <br>
+            Width: {{ listing.width_max }}<br><br><br>
+
             Price<br>
-           $ {{ listing.price }} / month
-            <br>
-            <br>
+            $ {{ listing.price }} / month<br><br>
+            
             Photo<br>
-           {{ listing.image }}
-            <br>
-            <br>
+            {{ listing.image }}<br><br>
 
 
 <!-- SOMEWHERE  on this page there will be a CALENDAR API that show availability -->
-
 
 	<div>
         <h1> Select This Listing</h1>
@@ -69,19 +59,11 @@
  	        <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!">
     
         </form>
-
-
 	</div>
+
+    
 <!-- <script src="http://code.jquery.com/jquery.js"></script> -->
 <script src="static/js/booking.js"></script>
 
-<!-- 
- When the advertiser selects to BOOK listing -  a pop up will show that says "Owner has been notified of you interest in this booking from date range : ____ to _____. They will confirm/deny within 1-2 days. Once the cinfirmation in selected YOU will receive an email with their contact information to complete the transaction." 
- 
- CANCEL BOOKING REQUEST
- START A NEW SEARCH
- RETURN TO LIST OF LISTINGS PAGE
- ACCOUNT INFO
- -->
 
 {% endblock %}

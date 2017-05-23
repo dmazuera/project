@@ -1,8 +1,6 @@
 from jinja2 import StrictUndefined
-
 from flask import Flask, jsonify, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
-
 from model_project import connect_to_db, db, User, Listings, Rental_Records
 import json
 
@@ -18,11 +16,7 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
-###################################################
-
-###################################################
-
-
+#____________________________________________________________________________________________
 
 
 
@@ -33,27 +27,44 @@ def index():
     return render_template("homepage.html")
 
 
+# Link here from HOMEPAGE just for me to see all users --- REMOVE FOR FINAL !
+@app.route("/view_users")
+def user_list():
+    """Show list of users."""
 
-###################################################
+    users = User.query.all()
+    return render_template("user_list.html", users=users)
+
+
+#LISTING LIST
+# Link here from HOMEPAGE just for me to see all listings --- REMOVE FOR FINAL !
+@app.route("/view_listing")
+def listings_list():
+    """Show list of listings."""
+
+    listings = Listings.query.order_by('listing_id').all()
+    return render_template("listings_list.html",
+                            listings=listings)
+
+
+##########################################################################################################
 
 #LOGIN 
 
 @app.route('/login', methods=["POST"])
 def login_form():
-    """     """
+    """ Login form. """
     return render_template("homepage.html")
 
 
 
 @app.route('/process_login', methods=["POST"])
 def process_login():
-    """      """
+    """  Process entries in login form. """
 
     email = request.form.get('email')
     password = request.form.get('password')
-
     user = User.query.filter_by(email=email).first()
-
 
     if not user:
         #if not user....
@@ -66,12 +77,9 @@ def process_login():
             flash("Thank you for Logging In!")
             return redirect("/entry_page")
 
-
         elif password != user.password:
              flash("Incorrect password Try again")
              return redirect("/")
-
-
 
 
 
@@ -79,14 +87,14 @@ def process_login():
 def logout():
     """Log out."""
 
-
     del session["user_id"]
     flash("Logged Out.")
     return redirect("/")
 
 
 
-#######################################################################
+############################################################################################################
+
 # ADD A SPLIT PANE 
 
 @app.route('/entry_page')
@@ -94,13 +102,6 @@ def entry_page():
     """     """
 
     return render_template("entry_page.html")
-
-
-
-
-
-
-#######################################################################
 
 
 
@@ -145,50 +146,36 @@ def process_new_user():
 
 
 
+# #???????????????????????????????????????????/
+# @app.route('/account_page')
+# def account_page(): 
+#     """" """
+#     user_id = session.get("user")
+#     user = User.query.get(user_id)
 
-#???????????????????????????????????????????/
-
-@app.route('/account_page')
-def account_page(): 
-    """" """
-    user_id = session.get("user")
-    user = User.query.get(user_id)
-
-    #I am passing the whole object "user" to this page... I can then on the page take out of "user" all the attributes
-    return render_template("user_info.html", user=user)
+#     #I am passing the whole object "user" to this page... I can then on the page take out of "user" all the attributes
+#     return render_template("user_info.html", user=user)
 
 
+# # USER PAGE
+# @app.route("/users/<int:user_id>")
+# def user_info(user_id):
+#     """Show info about user."""
 
-# USER PAGE
-@app.route("/users/<int:user_id>")
-def user_info(user_id):
-    """Show info about user."""
+#     user = User.query.get(user_id)
+#     return render_template("user.html", user=user)
+# #??????????????????????????????????????????????????
 
-    user = User.query.get(user_id)
-    return render_template("user.html", user=user)
 
-#??????????????????????????????????????????????????
-
-##########################################################################
+####################################################################################################
 
 #USER  
-
-#homepage has a link that hgets user to user/list page
-@app.route("/view_users")
-def user_list():
-    """Show list of users."""
-
-    users = User.query.all()
-    return render_template("user_list.html", users=users)
-
-
 
 @app.route("/user/<int:user_id>", methods=['GET'])
 def user_detail(user_id):
     """Show info about user.
     If a user is logged in, let them add/edit their page.
     """
-
     user = User.query.get(user_id)
     user_id = session.get("user_id")
 
@@ -206,6 +193,7 @@ def user_detail(user_id):
                            user_rating=user_rating)
 
 
+#________________or_________________
 
 
 @app.route("/user/<int:user_id>", methods=['POST'])
@@ -237,12 +225,7 @@ def user_edit_process(user_id):
 
 
 
-
-
-
-
-############################################################################s
-
+###################################################################################################
 
 #NEW LISTING
  
@@ -256,7 +239,7 @@ def new_listing():
 
 @app.route('/process_new_listing', methods=['POST'])
 def process_new_listing():
-    """Process new user to User DB."""
+    """Process new listing to Listings DB."""
 
     # Get form variables
     business = request.form["business"]
@@ -268,19 +251,18 @@ def process_new_listing():
     price = request.form["price"]
     # description = request.form["description"]
 
-    
-    # To add this customer to db:
-    # 1. Create the user
+    # To add this listing to db:
+    # 1. Create the listing
     listing = Listings(business=business, phone=phone, address=address, zipcode=zipcode, 
                        height_max=height_max, width_max=width_max)
 
-    # 2. Add this customer to session
+    # 2. Add this listing to DB
     db.session.add(listing)
 
     # 3. Commit the changes
     db.session.commit()
 
-    # 4. Display a flash message to confirm user added
+    # 4. Display a flash message to confirm listing added
     flash("Listing added successfully!!!")
 
     return redirect("/")
@@ -291,7 +273,7 @@ def process_new_listing():
 
 @app.route('/listings.json')
 def listing_info():
-    """JSON information about bears."""
+    """JSON information about listings to be passed to Google MAP API."""
 
     listings = {
         listing.listing_id: {
@@ -314,24 +296,11 @@ def listing_info():
 
 
 
-
-#LISTING LIST
-@app.route("/view_listing")
-def listings_list():
-    """Show list of listings."""
-
-    listings = Listings.query.order_by('listing_id').all()
-    return render_template("listings_list.html",
-                            listings=listings)
-
-
-
 @app.route("/listings/<int:listing_id>")
 def listing_detail(listing_id):
     """Show info about listing. (copied from Ratings -- info about movie**)
     If a user is logged in, let them add/edit a rating.
     """
-    
 
     print session
     # user_id = session.get("user")
@@ -347,14 +316,19 @@ def listing_detail(listing_id):
     print listing.phone
 
     # if the user is interested in BOOKING... send the user_id, owner_id and listing_id to Rental Records.
-
   
     return render_template("listing_details.html", listing=listing,
                                                    user=user)
 
 
-##########################################################################
-# HALF PAGE MAP --- other half SEARCH
+
+
+#######################################################################################################
+
+
+
+
+# GOOGLE MAP's API page
 
 @app.route('/advertise')
 def advertise():
@@ -373,7 +347,6 @@ def search_zipcode():
 
     return render_template("map_select_listing.html",
                             zipcode= zipcode)
-
 
 
 
@@ -397,13 +370,9 @@ def filter_search():
 
 
 
-#The BELOW is what is Jsonified to send to MARKERs
-def find_all_listings(height, width, low_price, high_price):
-    """ Finds all the listings within the geocoded location range. """
 
-    # Query for the listings in the database within the latitude and
-    # longitude bounds of the user's search with respect to any filters
-    #COMMA seperated conditions are ANDS in SQLAlchemy
+def find_all_listings(height, width, low_price, high_price):
+    """JSON information about FILTERED listings to be passed to Google MAP API."""
 
     listings = {
         listing.listing_id: {
@@ -428,7 +397,6 @@ def find_all_listings(height, width, low_price, high_price):
 
 
 
-
 @app.route('/book_listing')
 def book_listing():
     """Advertiser interested in Booking. Send an email to the owner of the listing to confirm or deny."""
@@ -439,9 +407,7 @@ def book_listing():
 
 
 
-
-
-####################################################################
+#_______________________________________________________________________________________________
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
