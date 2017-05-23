@@ -41,7 +41,6 @@ def index():
 @app.route('/login', methods=["POST"])
 def login_form():
     """     """
-
     return render_template("homepage.html")
 
 
@@ -266,6 +265,7 @@ def process_new_listing():
     zipcode = request.form["zipcode"]
     height_max = request.form["height"]
     width_max = request.form["width"]
+    price = request.form["price"]
     # description = request.form["description"]
 
     
@@ -305,6 +305,7 @@ def listing_info():
             "heightmax": listing.height_max,
             "widthmax": listing.width_max,
             "image": listing.image,
+            "price": listing.price
         }
         for listing in Listings.query.all()}
 
@@ -330,20 +331,26 @@ def listing_detail(listing_id):
     """Show info about listing. (copied from Ratings -- info about movie**)
     If a user is logged in, let them add/edit a rating.
     """
-    listing_id = Listings.query.get(listing_id)
+    
 
-    user_id = session.get("user_id")
+    print session
+    # user_id = session.get("user")
+    user_id = 999
+    print user_id
+    user = User.query.filter_by(user_id=user_id).first()
+    print user.email, user.user_id
+
+
+    print listing_id
+    listing = Listings.query.get(listing_id)
+    print type(listing)
+    print listing.phone
 
     # if the user is interested in BOOKING... send the user_id, owner_id and listing_id to Rental Records.
 
-    # if user_id:
-    #     user_rating = Listings.query.filter_by(
-    #         listing_id=listing_id, user_id=user_id).first()
-    # else:
-    #     user_rating = None
-
-    return render_template("listing_details.html", listing=listing_id,
-                                                   user_id=user_id)
+  
+    return render_template("listing_details.html", listing=listing,
+                                                   user=user)
 
 
 ##########################################################################
@@ -376,50 +383,47 @@ def search_zipcode():
 def filter_search():
     """Show map of SF with filters."""
 
-    bounds = json.loads(request.args.get('geoBounds'))
     low_price = int(request.args.get('lowPrice'))
     high_price = int(request.args.get('highPrice'))
     height = float(request.args.get('height'))
     width = float(request.args.get('width'))
     
     print "hi"
-    print "bounds"
     print "height"
     # Retrieves listings from db_queries
-    filtered_listings = find_all_listings(bounds, height, width, low_price, high_price)
+    listings = find_all_listings( height, width, low_price, high_price)
 
-    return jsonify(filtered_listings)
-
-
+    return jsonify(listings)
 
 
-def find_all_listings(bounds, height, width, low_price, high_price):
+
+#The BELOW is what is Jsonified to send to MARKERs
+def find_all_listings(height, width, low_price, high_price):
     """ Finds all the listings within the geocoded location range. """
-    
+
     # Query for the listings in the database within the latitude and
     # longitude bounds of the user's search with respect to any filters
-    listings = db.session.query(Listings).filter((bounds['west'] < Listings.lng),
-                                                 (bounds['east'] > Listings.lng), 
-                                                 (bounds['north'] > Listings.lat), 
-                                                 (bounds['south'] < Listings.lat), 
-                                                 (Listings.height >= height), 
-                                                 (Listing.width >= width), 
-                                                 (Listing.price >= low_price), 
-                                                 (Listing.price <= high_price)).all()
+    #COMMA seperated conditions are ANDS in SQLAlchemy
 
-    all_listings = []
-
-    for listing in listings:
-        all_listings.append({'response': 100,  # found listing response
-                                'latitude': listing.latitude,
-                                'longitude': listing.longitude,
-                                'city': listing.city,
-                                'state': listing.state,
-                                'zipcode': listing.zipcode,
-                                'price': listing.price,
-                                })
-
-    return all_listings
+    listings = {
+        listing.listing_id: {
+            "ownerId": listing.owner_id,
+            "business": listing.business,
+            "phone": listing.phone,
+            "address": listing.address,
+            "zipcode": listing.zipcode,
+            "Lat": listing.lat,
+            "Long": listing.lng,
+            "heightmax": listing.height_max,
+            "widthmax": listing.width_max,
+            "image": listing.image,
+            "price": listing.price
+        }
+        for listing in Listings.query.filter( (Listings.height_max >= height), 
+                                                 (Listings.width_max >= width), 
+                                                 (Listings.price >= low_price), 
+                                                 (Listings.price <= high_price)).all()}
+    return listings
 
 
 

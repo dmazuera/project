@@ -21,33 +21,16 @@ function initMap() {
 
 
 
-  //******** NEW ***********
-  // Adds map listener; updates map markers on changes to map once user
-  // idles from map panning/zooming
-  // map.addListener('idle', function() {
-  //   // If the user is searching within a region use the map listener,
-  //   // otherwise a single address search should not update
-  //   // listings shown on map when the map view changes
-  //   if (map.zoom >= 13){
-  //     // Once map is zoomed in, change to click instructions
-  //     // then check search filters before returning listing results
-  //       checkFilters();
-  //     }
-  // });
-
-
   var infoWindow = new google.maps.InfoWindow({
       width: 150
   });
     
-
    // Retrieving the information with AJAX
   $.get('/listings.json', function (listings) {
 
     var listing, marker, html, markerCluster;
+    markers = []
 
-
-    var markers = []
 
       for (var key in listings) {
           listing = listings[key];
@@ -70,13 +53,12 @@ function initMap() {
                   '<p><b>Address: </b>' + listing.address + '</p>' +
                   '<p><b>Ad Height: </b>' + listing.heightmax + '</p>' +
                   '<p><b>Ad Width: </b>' + listing.widthmax + '</p>' +
-                  '<p><b>Location: </b>' + marker.position + '</p>' +
+                  '<p><b>Price: $ </b>' + listing.price + '</p>' +
                   '<button onclick="window.location.href=\'/listings/' + key + '\'">Select Listing</button>' + 
               '</div>');
 
            bindInfoWindow(marker, map, infoWindow, html);
       }
-
 
       var markerCluster = new MarkerClusterer(map, markers,
       {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
@@ -86,7 +68,7 @@ function initMap() {
   });
 
 
-  function bindInfoWindow(marker, map, infoWindow, html) {
+ bindInfoWindow= function (marker, map, infoWindow, html) {
       google.maps.event.addListener(marker, 'click', function () {
           infoWindow.close();
           infoWindow.setContent(html);
@@ -122,8 +104,8 @@ function zipcode_zoom(zipcode) {
 // Gets filter values and requests the server for a database query on those values
 function filter_search(min, max, height, width){
   // Extract the map boundaries from geocoded location
-    var bounds = map.getBounds();
-    var geoBounds = JSON.stringify(bounds);
+    // var bounds = map.getBounds();
+    // var geoBounds = JSON.stringify(bounds);
 
     console.log(min)
   // Grab filter values and send to server as an object
@@ -137,13 +119,13 @@ function filter_search(min, max, height, width){
   var width = parseInt(width);
    console.log(width)
 
-  var filters = {'geoBounds': geoBounds,
+  var filters = {
                  'lowPrice': lowPrice, 
                  'highPrice': highPrice, 
                  'height': height, 
                  'width': width}
   console.log(filters)
-  console.log(geoBounds)
+
 
   $.get('/filter_search.json', filters, addListingMarkers)
 }
@@ -152,37 +134,85 @@ function filter_search(min, max, height, width){
 
 
 
-// // For all locations for sale within the map boundaries,
-// // show markers for each location
-// function addListingMarkers(listings){
-//   deleteMarkers();
-//   for (var i=0; i < listings.length; i++){
-//     var listing = listings[i];
-//     var latitude = parseFloat(listing['latitude']);
-//     var longitude = parseFloat(listing['longitude']);
+// For all locations for sale within the map boundaries,
+// show markers for each location
+function addListingMarkers(listings){
 
-//     // Creates a marker for each listing
-//     var marker = new google.maps.Marker({
-//       map: map,
-//       position: {lat: latitude, lng: longitude},
-//       details: listing,
-//       icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-//     });
-//     attachListener(marker, listing);
+    deleteMarkers();
 
-//     // Stores each marker in global markers array
-//     if (!(markers.has(marker))){
-//       markers.add(marker);
-//     }
-//   }
-// }
+  // Intial map hard coded to center of the Bay Area
+  var bayMap = {lat: 37.594, lng: -122.200};
+  var myLatLng = bayMap
+  var geocoder = new google.maps.Geocoder();
+
+  // Create a map object and specify the DOM element for display.
+  map = new google.maps.Map(document.getElementById('diana-map'), {
+    center: myLatLng,
+    scrollwheel: false,
+    zoom: 10,
+    zoomControl: true,
+    panControl: false,
+    streetViewControl: false,
+    // styles: MAPSTYLES,
+    // mapTypeId: google.maps.MapTypeId
+  });
 
 
-// // Deletes all markers in the array by removing references to them
-// function deleteMarkers() {
-//   clearMarkers();
-//   markers.clear();
-// }
+  var infoWindow = new google.maps.InfoWindow({
+      width: 150
+  });
+    
+    var listing, marker, html, markerCluster;
+    markers = []
+
+
+      for (var key in listings) {
+          listing = listings[key];
+
+          // Define the marker
+          marker = new google.maps.Marker({
+              position: new google.maps.LatLng(listing.Lat, listing.Long),
+              map: map,
+              title: 'Listing Name: ' + listing.business,
+              icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+          })
+
+          markers.push(marker);
+          // Define the content of the infoWindow
+          // hold off on image in a database
+          html = (
+              '<div class="window-content">' +
+                  '<img src="google-maps-demo/static/img/polarbear.jpg" alt="listing" style="width:150px;" class="thumbnail">' +
+                  '<p><b>Business Name: </b>' + listing.business + '</p>' +
+                  '<p><b>Address: </b>' + listing.address + '</p>' +
+                  '<p><b>Ad Height: </b>' + listing.heightmax + '</p>' +
+                  '<p><b>Ad Width: </b>' + listing.widthmax + '</p>' +
+                  '<p><b>Price: $ </b>' + listing.price + '</p>' +
+                  '<button onclick="window.location.href=\'/listings/' + key + '\'">Select Listing</button>' + 
+              '</div>');
+
+           bindInfoWindow(marker, map, infoWindow, html);
+      }
+
+      zipcode_zoom( document.getElementById("searchTxt").value)
+
+      var markerCluster = new MarkerClusterer(map, markers,
+      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});  
+      
+      
+  };
+
+
+
+// Deletes all markers in the array by removing references to them
+function deleteMarkers() {
+  for (var i = 0;  i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+  markers = [];
+}
+
+  
 
 // google.maps.event.addDomListener(window, 'load', initMap);
 

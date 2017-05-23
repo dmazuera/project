@@ -56,6 +56,7 @@ class Listings(db.Model):
     width_max = db.Column(db.Integer)
     price= db.Column(db.Integer)
     image = db.Column(db.String(1000))
+    # description = db.Column(db.String(1000))
     
     # Define relationship to owner
     owner = db.relationship("User", backref="listings")
