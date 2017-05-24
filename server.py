@@ -171,56 +171,56 @@ def process_new_user():
 
 #USER  
 
-@app.route("/user/<int:user_id>", methods=['GET'])
-def user_detail(user_id):
-    """Show info about user.
-    If a user is logged in, let them add/edit their page.
-    """
-    user = User.query.get(user_id)
-    user_id = session.get("user_id")
+# @app.route("/user/<int:user_id>", methods=['GET'])
+# def user_detail(user_id):
+#     """Show info about user.
+#     If a user is logged in, let them add/edit their page.
+#     """
+#     user = User.query.get(user_id)
+#     user_id = session.get("user_id")
 
-    #below will be all the things a user can SEE that is THEIR own on the PAGE
-    if user_id:
-        first_name = User.query.filter_by(
-            movie_id=movie_id, user_id=user_id).first()
+#     #below will be all the things a user can SEE that is THEIR own on the PAGE
+#     if user_id:
+#         first_name = User.query.filter_by(
+#             movie_id=movie_id, user_id=user_id).first()
 
-    else:
-        user_rating = None
+#     else:
+#         user_rating = None
 
-    #passing the items a user will be able to see that is THERE OWN on the HTML page
-    return render_template("user_info.html",
-                           user=user,
-                           user_rating=user_rating)
-
-
-#________________or_________________
+#     #passing the items a user will be able to see that is THERE OWN on the HTML page
+#     return render_template("user_info.html",
+#                            user=user,
+#                            user_rating=user_rating)
 
 
-@app.route("/user/<int:user_id>", methods=['POST'])
-def user_edit_process(user_id):
-    """Add/edit user info."""
+# #________________or_________________
 
-    # Get form variables
-    score = int(request.form["score"])
 
-    user_id = session.get("user_id")
-    if not user_id:
-        raise Exception("No user logged in.")
+# @app.route("/user/<int:user_id>", methods=['POST'])
+# def user_edit_process(user_id):
+#     """Add/edit user info."""
 
-    rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first()
+#     # Get form variables
+#     score = int(request.form["score"])
 
-    if rating:
-        rating.score = score
-        flash("Rating updated.")
+#     user_id = session.get("user_id")
+#     if not user_id:
+#         raise Exception("No user logged in.")
 
-    else:
-        rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-        flash("Rating added.")
-        db.session.add(rating)
+#     rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first()
 
-    db.session.commit()
+#     if rating:
+#         rating.score = score
+#         flash("Rating updated.")
 
-    return redirect("/movies/%s" % movie_id)
+#     else:
+#         rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
+#         flash("Rating added.")
+#         db.session.add(rating)
+
+#     db.session.commit()
+
+#     return redirect("/movies/%s" % movie_id)
 
 
 
