@@ -46,7 +46,7 @@ function initMap() {
                     '<p><b>Address: </b>' + listing.address + '</p>' +
                     '<p><b>Ad Height: </b>' + listing.heightmax + '</p>' +
                     '<p><b>Ad Width: </b>' + listing.widthmax + '</p>' +
-                    '<p><b>Price: $ </b>' + listing.price + '</p>' +
+                    '<p><b>Price : $ </b>' + listing.price + ' / month </p>' +
                     '<button onclick="window.location.href=\'/listings/' + key + '\'">Select Listing</button>' + 
                 '</div>');
 

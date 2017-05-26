@@ -2,8 +2,26 @@
 
 {% extends 'base.html' %}
 {% block content %}
-
   <h1>Listing Info</h1>
+
+
+        <div class="col-xs-6">
+        <div id="profile-pic">    
+
+            <form enctype="multipart/form-data">
+            <div id="update-pic" class="form-group file-container" hidden>
+            <label class="btn btn-info btn-file">
+                    
+                    Browse <input id="user-photo" type="file" style="display: none;" name="file">
+                </label>
+                <input type="button" id="upload-pic" value="Upload" class="btn btn-info">
+            </div>
+            </form>
+           </div>
+         </div>
+
+
+
 
   <div> 
     <h2>Basic Info: </h2>
@@ -34,36 +52,71 @@
             Photo<br>
             {{ listing.image }}<br><br>
 
-
+</div>
 <!-- SOMEWHERE  on this page there will be a CALENDAR API that show availability -->
 
 	<div>
         <h1> Select This Listing</h1>
         <form id="book-listings">
+              Start Date:
+                <select name="start_date">
+                  <option value="may">May 2017</option>
+                  <option value="june">June 2017</option>
+                  <option value="july">July 2017</option>
+                  <option value="august">August 2017</option>
+                  <option value="september">September 2017</option>
+                  <option value="october">October 2017</option>
+                  <option value="november">November 2017</option>
+                  <option value="december">December 2017</option>
+                  <option value="january">January 2018</option>
+                </select>
 
-            Date Range: <br>
-              Select a month:
-              <input type="month" name="year_month">
-            </form>
+              Start Date:
+                <select name="end_date">
+                  <option value="july">July 2017</option>
+                  <option value="august">August 2017</option>
+                  <option value="september">September 2017</option>
+                  <option value="october">October 2017</option>
+                  <option value="november">November 2017</option>
+                  <option value="december">December 2017</option>
+                  <option value="january">January 2018</option>
+                  <option value="february">February 2018</option>
+                  <option value="march">March 2018</option>
+                  <option value="april">April 2018</option>
+                  <option value="may">May 2018</option>
+                </select>
+
+            <br>
             <br>
 
-            Ad Dimensions: <br>
-            Height:<input type="text" size="5" name="ad_height" id="ad-height" required> ft <br>
-            Width:<input type="text" size="5" name="ad_width" id="ad-width" required>ft<br>
+            <h2> Ad Dimensions: </h2> <br>
+            <label> Height:<input type="text" size="5" name="ad_height" id="ad-height" required>ft </label> <br>
+            <label> Width:<input type="text" size="5" name="ad_width" id="ad-width" required>ft </label> <br>
+            <button id="booking_total">Click to Calculate Total</button> <br> <br>
 
-            <br>
+            <label>Total: $  </label> <span id="result" size="5">&nbsp;</span>
 
-            Price:<br>
-            Total to book: $  <span id="result">&nbsp;</span> <button id="booking_total">Click for total</button> 
-            <br>
- 	        <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!">
+
+            <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!">
+
+            
     
-        </form>
+
+      </form>
+
+           <!--  <br>
+
+             <button id="booking_total">Click for total</button> 
+            <br>
+ -->
+ <!-- <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!"> -->
+
+ 	        
 	</div>
 
-    
-<!-- <script src="http://code.jquery.com/jquery.js"></script> -->
-<script src="static/js/booking.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+
+<script src="/static/js/booking.js"></script>
 
 
 {% endblock %}

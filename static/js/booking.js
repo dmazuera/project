@@ -1,24 +1,31 @@
-
+console.log("in booking js")
 
 function total(start_date, end_date) {
-    var totalDays = end_date - start_date;
+    var totalMonths = "end_date" - "start_date";
     var priceListing = 15;
 
-    var totalPrice = totalDays * priceListing;
+    var totalPrice = totalMonths * priceListing;
 
     return totalPrice;
 }
 
-$('#book-listings').on('submit', function (evt) {
+
+$('#booking_total').on('click', function(evt){ 
     evt.preventDefault();
-    // debugger
+    var total_amount = total(15, 30);
+    $('#result').text(total_amount);
 
+})
+// $('#book-listings').on('submit', function (evt) {
+//     evt.preventDefault();
+//     // debugger
 
-    var startDate = parseInt($('#start_date').val());
-    var endDate = parseInt($('#end_date').val());
+//     // var startDate = parseInt($('#start_date').val());
+//     // var endDate = parseInt($('#end_date').val());
 
-    var total_amt = total(startDate, endDate);
+//     var total_amount = total(15, 30);
 
-    $('#result').text(total_amt);
+//     $('#result').text(total_amount);
 
-});
+// });
+

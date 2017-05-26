@@ -6,10 +6,11 @@ from model_project import User, Listings, Rental_Records, connect_to_db, db
 from server import app
 
 
+
 def load_users():
     """Load users from u.user into database."""
 
-    print "Users"
+    # print "Users"
     for i, row in enumerate(open("user_data.csv")):
         row = row.rstrip()
         user_id, username, first_name, last_name, email, password, phone, ip_address, city, is_activated= row.split(",")
@@ -22,8 +23,8 @@ def load_users():
                     is_activated=is_activated)
         
         db.session.add(user)
-        if i % 100 == 0:
-            print i
+        # if i % 100 == 0:
+            # print i
     db.session.commit()
 
 
@@ -31,7 +32,7 @@ def load_users():
 def load_listings():
     """Load movies from u.item into database."""
 
-    print "Listings"
+    # print "Listings"
     for i, row in enumerate(open("seed_data.txt")):
         row = row.rstrip()
 
@@ -51,8 +52,8 @@ def load_listings():
                       lng=float(lng))
 
         db.session.add(listings)
-        if i % 100 == 0:
-            print i
+        # if i % 100 == 0:
+        #     print i
     db.session.commit()
 
 
@@ -60,7 +61,7 @@ def load_listings():
 def load_numbers():
     """Load movies from u.item into database."""
 
-    print "Listings"
+    # print "Listings"
     for i, row in enumerate(open("number_data.txt")):
         row = row.rstrip()
         #need to find the already made seeded table for listings and choose to fill in the "null" columns in THAT table
@@ -76,8 +77,8 @@ def load_numbers():
         listing.height_max = height
         listing.width_max = width
         
-        if i % 100 == 0:
-            print i
+        # if i % 100 == 0:
+        #     print i
     db.session.commit() #I dont need to add.. since I am not creating a new row.. just updating :)
 
 

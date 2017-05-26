@@ -3,6 +3,16 @@
   padding: 0.30em 0;
   border: solid 2px red;
   margin-right: 1em;
-  width: 2em;
+  width: 10em;
   text-align: center;
+}
+
+
+h1, h2, h3, .navbar-brand { font-family: "Roboto", sans-serif; }
+
+p { 
+  font-family: "Roboto", sans-serif;
+  width: 50%;
+  margin: 1em;
+  padding: 1em; 
 }

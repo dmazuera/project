@@ -115,6 +115,8 @@ def new_user():
 
 
 
+
+
 @app.route('/process_new_user', methods=['POST'])
 def process_new_user():
     """Process new user to User DB."""
@@ -295,25 +297,22 @@ def listing_info():
 
 
 
-
-@app.route("/listings/<int:listing_id>")
+@app.route("/listing/<int:listing_id>", methods=['GET'])
 def listing_detail(listing_id):
     """Show info about listing. (copied from Ratings -- info about movie**)
     If a user is logged in, let them add/edit a rating.
     """
-
-    print session
-    # user_id = session.get("user")
-    user_id = 999
+    print "\n\n\n\n in listings detials \n\n\n\n\n"
+    # print session
+    user_id = session.get("user")
+    # user_id = 999
     print user_id
     user = User.query.filter_by(user_id=user_id).first()
-    print user.email, user.user_id
 
 
-    print listing_id
-    listing = Listings.query.get(listing_id)
-    print type(listing)
-    print listing.phone
+    listing = Listings.query.get(int(listing_id))
+    # print type(listing)
+    # print listing.phone
 
     # if the user is interested in BOOKING... send the user_id, owner_id and listing_id to Rental Records.
   
@@ -323,10 +322,13 @@ def listing_detail(listing_id):
 
 
 
+
+
+
+
+
+
 #######################################################################################################
-
-
-
 
 # GOOGLE MAP's API page
 
@@ -351,7 +353,7 @@ def search_zipcode():
 
 
 
-#USE TO GET OUT listings with the FILTERS!!! Mentioned by user.
+# USE TO GET OUT listings with the FILTERS!!! Mentioned by user.
 @app.route('/filter_search.json')
 def filter_search():
     """Show map of SF with filters."""
@@ -393,6 +395,61 @@ def find_all_listings(height, width, low_price, high_price):
                                                  (Listings.price >= low_price), 
                                                  (Listings.price <= high_price)).all()}
     return listings
+
+
+
+
+# @app.route('/process_booking', methods=["POST"])
+# def process_booking():
+#     """  Process entries in booking form. """
+
+#     start_date = request.args.get("start_date")
+#     end_date = request.args.get("end_date")
+#     noun = request.args.get("noun")
+
+
+
+
+#     if not noun:
+#         noun = "CAT"
+#     adjective = request.args.get("adjective")
+
+#     file_name = choice(["madlib.html", "madlib2.html"])
+
+#     return render_template(file_name,
+#                            person=player,
+#                            color=color,
+#                            noun=noun,
+#                            adjective=adjective
+                           # )
+
+
+
+
+
+
+
+
+
+    # email = request.form.get('email')
+    # password = request.form.get('password')
+    # user = User.query.filter_by(email=email).first()
+
+    # if not user:
+    #     #if not user....
+    #     flash("YOU ARE NOT IN THE SYSTEM - please register")
+    #     return redirect("/")
+    # else:
+    #     if password == user.password:
+    #         # login success
+    #         session["user"] = user.user_id
+    #         flash("Thank you for Logging In!")
+    #         return redirect("/entry_page")
+
+        # elif password != user.password:
+        #      flash("Incorrect password Try again")
+        #      return redirect("/")
+
 
 
 
