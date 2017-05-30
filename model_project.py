@@ -24,7 +24,7 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     is_activated = db.Column(db.Boolean, default=False)
-    picture = db.Column(db.String(200)) #url profile pics
+    picture = db.Column(db.String(1000)) #url profile pics
     description = db.Column(db.Text)
 
 
@@ -55,8 +55,9 @@ class Listings(db.Model):
     height_max = db.Column(db.Integer)
     width_max = db.Column(db.Integer)
     price= db.Column(db.Integer)
-    image = db.Column(db.String(1000))
-    # description = db.Column(db.String(1000))
+    owner_picture = db.Column(db.String(1000))
+    listing_photo = db.Column(db.String(1000))
+    description = db.Column(db.String(1000))
     
     # Define relationship to owner
     owner = db.relationship("User", backref="listings")
@@ -94,11 +95,12 @@ class Rental_Records(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Rental ID: %s Active: %s Phone: %s \
-                Start: %s End: %s>" % (self.listing_id,
+        return "<Listing ID: %s Active: %s Start Date: %s \
+                End Date: %s Price: %s>" % (self.listing_id,
                                        self.in_active,
                                        self.start_date,
-                                       self.end_date)
+                                       self.end_date,
+                                       self.price)
 
 
 

@@ -13,25 +13,28 @@
             <label class="btn btn-info btn-file">
                     
                     Browse <input id="user-photo" type="file" style="display: none;" name="file">
-                </label>
+            </label>
                 <input type="button" id="upload-pic" value="Upload" class="btn btn-info">
             </div>
             </form>
-           </div>
-         </div>
+        </div>
+        </div>
+<br>
+<img src='{{ listing_owner_photo }}' width="50%" height="50%" />
 
-
-
+<img src='/static/img/test_wall1.jpg' width="50%" height="50%" />
 
   <div> 
     <h2>Basic Info: </h2>
     <ul>
-         <li>
-              <a href="/listings/{{ listing.listing_id }}">
+        <li>
+              <a href="/listing/{{ listing.listing_id }}">
                 {{ user.email }} {{ user.user_id }}
               </a>
-          </li>
+        </li>
     </ul>
+            Photo<br>
+
 
             Business Name:<br>
             {{ listing.business }}<br><br>
@@ -49,67 +52,122 @@
             Price<br>
             $ {{ listing.price }} / month<br><br>
             
-            Photo<br>
-            {{ listing.image }}<br><br>
+
 
 </div>
+
+ <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">See Listing Availability </button>
+
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" role="dialog">
+                      <div class="modal-dialog">
+
+
+
+
+                        <!-- Modal content-->
+
+                        <div class="modal-content" style="background-image: url('/static/img/test_wall1.jpg'); background-size: cover;"> 
+  <!-- search css terms for forground image -->
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>Some text in the modal.</p>
+                            <!-- This modal will have a photo of the listing WALL in the background and a box with said selected dimensions in layered over it... to see what the ad will look like.  -->
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+
+                   <!-- Trigger the modal with a button -->
+                  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Click to see your ad on listing space </button>
+
+                  <!-- Modal -->
+                  <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                      <!-- Modal content-->  
+                      <div class="modal-content" style="background-image: url('/static/img/+ listing.listing_photo +'); background-size: cover;">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Some text in the modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
 <!-- SOMEWHERE  on this page there will be a CALENDAR API that show availability -->
+
+
 
 	<div>
         <h1> Select This Listing</h1>
-        <form id="book-listings">
-              Start Date:
-                <select name="start_date">
-                  <option value="may">May 2017</option>
-                  <option value="june">June 2017</option>
-                  <option value="july">July 2017</option>
-                  <option value="august">August 2017</option>
-                  <option value="september">September 2017</option>
-                  <option value="october">October 2017</option>
-                  <option value="november">November 2017</option>
-                  <option value="december">December 2017</option>
-                  <option value="january">January 2018</option>
-                </select>
+        <form action="/process_booking" id="calendar-form" method="POST">
 
               Start Date:
-                <select name="end_date">
-                  <option value="july">July 2017</option>
-                  <option value="august">August 2017</option>
-                  <option value="september">September 2017</option>
-                  <option value="october">October 2017</option>
-                  <option value="november">November 2017</option>
-                  <option value="december">December 2017</option>
-                  <option value="january">January 2018</option>
-                  <option value="february">February 2018</option>
-                  <option value="march">March 2018</option>
-                  <option value="april">April 2018</option>
-                  <option value="may">May 2018</option>
+                <select name="start_date" id="start_date">
+                  <option value="may17">May 2017</option>
+                  <option value="june17">June 2017</option>
+                  <option value="july17">July 2017</option>
+                  <option value="august17">August 2017</option>
+                  <option value="september17">September 2017</option>
+                  <option value="october17"17>October 2017</option>
+                  <option value="november17">November 2017</option>
+                  <option value="december17">December 2017</option>
+                  <option value="january18">January 2018</option>
                 </select>
 
-            <br>
+
+              End Date:
+                <select name="end_date" id="end_date">
+                   <option value="july17">July 2017</option>
+                  <option value="august17">August 2017</option>
+                  <option value="september17">September 2017</option>
+                  <option value="october17"17>October 2017</option>
+                  <option value="november17">November 2017</option>
+                  <option value="december17">December 2017</option>
+                  <option value="january18">January 2018</option>
+                  <option value="february18">February 2018</option>
+                  <option value="march18">March 2018</option>
+                  <option value="april18">April 2018</option>
+                  <option value="may18">May 2018</option>
+                </select>
+
+
+                <br> Price<br>
+            $ {{ listing.price }} / month<br><br>
+
+                <input type="submit" id="calc-months" class="btn btn-primary input-sm"><br><br>
+                <label>Total Price for months selected: $  </label> <span id="rent-price-result" data-listing-price="{{ listing.price }}" name="rent-price-result">&nbsp;</span>
+
+
+    </form>
             <br>
 
             <h2> Ad Dimensions: </h2> <br>
             <label> Height:<input type="text" size="5" name="ad_height" id="ad-height" required>ft </label> <br>
-            <label> Width:<input type="text" size="5" name="ad_width" id="ad-width" required>ft </label> <br>
-            <button id="booking_total">Click to Calculate Total</button> <br> <br>
-
-            <label>Total: $  </label> <span id="result" size="5">&nbsp;</span>
+            <label> Width:<input type="text" size="5" name="ad_width" id="ad-width" required>ft </label> <br> <br>
 
 
-            <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!">
-
-            
-    
+            <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!"> <br><br>
 
       </form>
-
-           <!--  <br>
-
-             <button id="booking_total">Click for total</button> 
-            <br>
- -->
- <!-- <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!"> -->
 
  	        
 	</div>
@@ -117,6 +175,7 @@
 <script src="http://code.jquery.com/jquery.js"></script>
 
 <script src="/static/js/booking.js"></script>
+
 
 
 {% endblock %}

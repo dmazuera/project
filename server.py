@@ -173,56 +173,56 @@ def process_new_user():
 
 #USER  
 
-# @app.route("/user/<int:user_id>", methods=['GET'])
-# def user_detail(user_id):
-#     """Show info about user.
-#     If a user is logged in, let them add/edit their page.
-#     """
-#     user = User.query.get(user_id)
-#     user_id = session.get("user_id")
+@app.route("/user/<int:user_id>", methods=['GET'])
+def user_detail(user_id):
+    """Show info about user.
+    If a user is logged in, let them add/edit their page.
+    """
+    user = User.query.get(user_id)
+    user_id = session.get("user_id")
 
-#     #below will be all the things a user can SEE that is THEIR own on the PAGE
-#     if user_id:
-#         first_name = User.query.filter_by(
-#             movie_id=movie_id, user_id=user_id).first()
+    #below will be all the things a user can SEE that is THEIR own on the PAGE
+    if user_id:
+        first_name = User.query.filter_by(
+            movie_id=movie_id, user_id=user_id).first()
 
-#     else:
-#         user_rating = None
+    else:
+        user_rating = None
 
-#     #passing the items a user will be able to see that is THERE OWN on the HTML page
-#     return render_template("user_info.html",
-#                            user=user,
-#                            user_rating=user_rating)
+    #passing the items a user will be able to see that is THERE OWN on the HTML page
+    return render_template("user_info.html",
+                           user=user,
+                           user_rating=user_rating)
 
 
 # #________________or_________________
 
 
-# @app.route("/user/<int:user_id>", methods=['POST'])
-# def user_edit_process(user_id):
-#     """Add/edit user info."""
+@app.route("/user/<int:user_id>", methods=['POST'])
+def user_edit_process(user_id):
+    """Add/edit user info."""
 
-#     # Get form variables
-#     score = int(request.form["score"])
+    # Get form variables
+    score = int(request.form["score"])
 
-#     user_id = session.get("user_id")
-#     if not user_id:
-#         raise Exception("No user logged in.")
+    user_id = session.get("user_id")
+    if not user_id:
+        raise Exception("No user logged in.")
 
-#     rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first()
+    rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first()
 
-#     if rating:
-#         rating.score = score
-#         flash("Rating updated.")
+    if rating:
+        rating.score = score
+        flash("Rating updated.")
 
-#     else:
-#         rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-#         flash("Rating added.")
-#         db.session.add(rating)
+    else:
+        rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
+        flash("Rating added.")
+        db.session.add(rating)
 
-#     db.session.commit()
+    db.session.commit()
 
-#     return redirect("/movies/%s" % movie_id)
+    return redirect("/movies/%s" % movie_id)
 
 
 
@@ -288,12 +288,16 @@ def listing_info():
             "Long": listing.lng,
             "heightmax": listing.height_max,
             "widthmax": listing.width_max,
-            "image": listing.image,
-            "price": listing.price
+            "owner_picture": listing.owner_picture,
+            "price": listing.price, 
+            "listing_photo":listing.listing_photo,
+            "description":listing.description
         }
         for listing in Listings.query.all()}
 
     return jsonify(listings)
+
+
 
 
 
@@ -302,24 +306,19 @@ def listing_detail(listing_id):
     """Show info about listing. (copied from Ratings -- info about movie**)
     If a user is logged in, let them add/edit a rating.
     """
-    print "\n\n\n\n in listings detials \n\n\n\n\n"
-    # print session
     user_id = session.get("user")
-    # user_id = 999
+
     print user_id
     user = User.query.filter_by(user_id=user_id).first()
-
-
     listing = Listings.query.get(int(listing_id))
-    # print type(listing)
-    # print listing.phone
+    listing_owner_photo = "/static/img/" + str(listing.owner_picture)
+    listing_image= "/static/img/" + str(listing.listing_photo)
 
-    # if the user is interested in BOOKING... send the user_id, owner_id and listing_id to Rental Records.
-  
+    # raise Exception
     return render_template("listing_details.html", listing=listing,
-                                                   user=user)
-
-
+                                                   user=user, 
+                                                   listing_owner_photo=listing_owner_photo,
+                                                   listing_image=listing_image )
 
 
 
@@ -397,68 +396,45 @@ def find_all_listings(height, width, low_price, high_price):
     return listings
 
 
+#######################################################################################################
 
 
-# @app.route('/process_booking', methods=["POST"])
-# def process_booking():
-#     """  Process entries in booking form. """
+@app.route('/process_booking', methods=['POST'])
+def process_booking():
+    """Process new booking to DB."""
 
-#     start_date = request.args.get("start_date")
-#     end_date = request.args.get("end_date")
-#     noun = request.args.get("noun")
-
-
-
-
-#     if not noun:
-#         noun = "CAT"
-#     adjective = request.args.get("adjective")
-
-#     file_name = choice(["madlib.html", "madlib2.html"])
-
-#     return render_template(file_name,
-#                            person=player,
-#                            color=color,
-#                            noun=noun,
-#                            adjective=adjective
-                           # )
+    # Get form variables
+    start_date = request.form["start_date"]
+    end_date = request.form["end_date"]
+    ad_height = request.form["ad_height"]
+    ad_width = request.form["ad_width"]
+    price = request.form["result"]
+   
+    is_active = True
+    user_id = session.get("user")
 
 
+    record = Rental_Records(user_id=user_id, start_date=start_date, end_date=end_date, 
+                ad_height=ad_height, price=price, is_active=is_active)
 
+    db.session.add(record)
+    db.session.commit()
 
+    flash("Booking confirmed!!!")
 
+    return redirect("/book_listing")
 
 
 
 
-    # email = request.form.get('email')
-    # password = request.form.get('password')
-    # user = User.query.filter_by(email=email).first()
+@app.route("/book_listing")
+def book_listings():
+    """Show list of listings."""
 
-    # if not user:
-    #     #if not user....
-    #     flash("YOU ARE NOT IN THE SYSTEM - please register")
-    #     return redirect("/")
-    # else:
-    #     if password == user.password:
-    #         # login success
-    #         session["user"] = user.user_id
-    #         flash("Thank you for Logging In!")
-    #         return redirect("/entry_page")
+    rentals = Rental_Records.query.order_by('rental_id').all()
 
-        # elif password != user.password:
-        #      flash("Incorrect password Try again")
-        #      return redirect("/")
-
-
-
-
-
-@app.route('/book_listing')
-def book_listing():
-    """Advertiser interested in Booking. Send an email to the owner of the listing to confirm or deny."""
-
-    return render_template("listing_EMAIL.html") #????????
+    return render_template("use_rental_confirmation.html",
+                            rentals=rentals)
 
 
 

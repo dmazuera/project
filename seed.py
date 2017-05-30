@@ -10,7 +10,7 @@ from server import app
 def load_users():
     """Load users from u.user into database."""
 
-    # print "Users"
+    print "Users"
     for i, row in enumerate(open("user_data.csv")):
         row = row.rstrip()
         user_id, username, first_name, last_name, email, password, phone, ip_address, city, is_activated= row.split(",")
@@ -23,8 +23,8 @@ def load_users():
                     is_activated=is_activated)
         
         db.session.add(user)
-        # if i % 100 == 0:
-            # print i
+        if i % 100 == 0:
+            print i
     db.session.commit()
 
 
@@ -32,12 +32,12 @@ def load_users():
 def load_listings():
     """Load movies from u.item into database."""
 
-    # print "Listings"
+    print "Listings"
     for i, row in enumerate(open("seed_data.txt")):
         row = row.rstrip()
 
         try:
-            business, address, yelp_url, phone, lat, lng  = row.split("|")
+            business, address, owner_picture, phone, lat, lng, listing_photo, description = row.split("|")
         except ValueError:
             import pdb; pdb.set_trace()
 
@@ -49,12 +49,40 @@ def load_listings():
                       zipcode=zipcode,
                       phone=phone,
                       lat=float(lat),
-                      lng=float(lng))
+                      lng=float(lng),
+                      owner_picture=owner_picture, 
+                      listing_photo=listing_photo,
+                      description=description)
 
         db.session.add(listings)
-        # if i % 100 == 0:
-        #     print i
+        if i % 100 == 0:
+            print i
     db.session.commit()
+
+
+
+def load_numbers():
+    """Load movies from u.item into database."""
+
+    print "Listings"
+    for i, row in enumerate(open("number_data.txt")):
+        row = row.rstrip()
+        #need to find the already made seeded table for listings and choose to fill in the "null" columns in THAT table
+        listing = Listings.query.filter_by(listing_id=(i+1)).one()
+
+        try:
+            price, height, width = row.split(" ")
+        except ValueError:
+            import pdb; pdb.set_trace()
+
+        #I dont need to make a new Listing row... instead sqlal is lettingme treatthe row already  as a object
+        listing.price = price
+        listing.height_max = height
+        listing.width_max = width
+        
+        if i % 100 == 0:
+            print i
+    db.session.commit() #I dont need to add.. since I am not creating a new row.. just updating :)
 
 
 
@@ -104,9 +132,9 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
 
-    # load_users()
-    # load_listings()
-    # load_numbers()
+    load_users()
+    load_listings()
+    load_numbers()
 
     # set_val_user_id()
 
