@@ -24,7 +24,8 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     is_activated = db.Column(db.Boolean, default=False)
-    picture = db.Column(db.String(1000)) #url profile pics
+    user_photo=db.Column(db.String(1000)) #url profile pics
+    ad_image = db.Column(db.String(1000)) 
     description = db.Column(db.Text)
 
 

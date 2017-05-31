@@ -13,14 +13,16 @@ def load_users():
     print "Users"
     for i, row in enumerate(open("user_data.csv")):
         row = row.rstrip()
-        user_id, username, first_name, last_name, email, password, phone, ip_address, city, is_activated= row.split(",")
+        user_photo, username, first_name, last_name, email, password, phone, ad_image, city, is_activated= row.split(",")
 
         user = User(first_name=first_name,
                     last_name=last_name,
                     phone=phone,
                     email=email,
                     password=password,
-                    is_activated=is_activated)
+                    is_activated=is_activated, 
+                    user_photo=user_photo,
+                    ad_image=ad_image)
         
         db.session.add(user)
         if i % 100 == 0:

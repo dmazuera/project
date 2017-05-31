@@ -22,7 +22,7 @@
 <br>
 <img src='{{ listing_owner_photo }}' width="50%" height="50%" />
 
-<img src='/static/img/test_wall1.jpg' width="50%" height="50%" />
+<img src='/static/img/Shenas_thrift_wall.jpg' width="50%" height="50%" />
 
   <div> 
     <h2>Basic Info: </h2>
@@ -47,70 +47,42 @@
 
             Advertisement Space Dimensions:<br>
             Height: {{ listing.height_max }}<br>
-            Width: {{ listing.width_max }}<br><br><br>
+            Width: {{ listing.width_max }}<br><br>
 
             Price<br>
             $ {{ listing.price }} / month<br><br>
-            
 
+  </div>
 
-</div>
 
  <!-- Trigger the modal with a button -->
-                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">See Listing Availability </button>
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Click to See Listing Space </button>
 
                     <!-- Modal -->
                     <div id="myModal" class="modal fade" role="dialog">
                       <div class="modal-dialog">
 
 
-
-
                         <!-- Modal content-->
 
-                        <div class="modal-content" style="background-image: url('/static/img/test_wall1.jpg'); background-size: cover;"> 
-  <!-- search css terms for forground image -->
+                        <div class="modal-content" style="background-image: url('/static/img/Shenas_thrift_wall.jpg'); background-size: cover;"> 
+                          <!-- search css terms for forground image -->
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Modal Header</h4>
                           </div>
                           <div class="modal-body">
                             <p>Some text in the modal.</p>
-                            <!-- This modal will have a photo of the listing WALL in the background and a box with said selected dimensions in layered over it... to see what the ad will look like.  -->
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Click to Show Your Ad on Listing</button>
+                           <!--  JS event listener to add the other image to foreground when button clicked -->
                           </div>
                         </div>
 
                       </div>
                     </div>
 
-
-
-                   <!-- Trigger the modal with a button -->
-                  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Click to see your ad on listing space </button>
-
-                  <!-- Modal -->
-                  <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-
-                      <!-- Modal content-->  
-                      <div class="modal-content" style="background-image: url('/static/img/+ listing.listing_photo +'); background-size: cover;">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Modal Header</h4>
-                        </div>
-                        <div class="modal-body">
-                          <p>Some text in the modal.</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
 
 <!-- SOMEWHERE  on this page there will be a CALENDAR API that show availability -->
 

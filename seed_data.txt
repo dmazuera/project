@@ -1,5 +1,8 @@
+Flowers By Carlos|150 Valencia St, San Francisco, CA 94110|FlowersCarlos.jpg|+14158246555|37.7702006|-122.4225669|flowers_carlos_wall.jpg|
+Shena's Thirft Store|280 Valencia St, San Francisco, CA 94110|user_thrift.jpg|+14158759370|37.7685006|-122.4225099|Shenas_thrift_wall.jpg|
+Philz Coffee|3101 24th St, San Francisco, CA 94110|philz.jpg|+14158759370|37.7523971028|-122.414263665|test_wall1.jpg|Hello! The wall listed here is a ... 
+Samiramis Imports|3139 Mission St, San Francisco, CA 94110|SImports.jpg|+14153683802|37.765214|-122.419862||
 Dolores Barber|19th & Dolores St, San Francisco, CA 94114|DoloresBarber.jpg|+14158312700|37.760856|-122.425869||
-Arellano's Wood Windows|3101 24th St, San Francisco, CA 94110|WoodWindows.jpg|+14158759370|37.752093|-122.418149||
 Mixcoatl Arts and Crafts|711 Valencia St, San Francisco, CA 94110|Mixcoatl.jpg|+14158316331|37.761357|-122.421346||
 The Temporarium Coffee & Tea|3414 22nd St, San Francisco, CA 94111|TCoffeeTea.jpg|+14155470616|37.7552528|-122.4235786||
 Chicken Terriyake|1035 Cumberland St, San Francisco, CA 94115|chicken-terriyake.jpg|+14158729880|37.761091|-122.423592||
@@ -7,15 +10,13 @@ La Victoria Mexican Bakery|2022 Mission St, San Francisco, CA 94110|LaVictoria.j
 Antojitos Mexicanos|16TH Ave, San Francisco, CA 94114|Business_baker.jpg|+14156213260|37.760488|-122.425710||
 Danny Bean|2757 Mission St, San Francisco, CA 94110|DannyBean.jpg|+14155220434|37.752917|-122.418273||
 Five Star Bookstore|4251 A 18th St, San Francisco, CA 94114|Bookstore.jpg|+14155525128|37.76058|-122.43693||
-Philz Coffee|3101 24th St, San Francisco, CA 94110|philz.jpg|+14158759370|37.7523971028|-122.414263665|test_wall1.jpg|Hello! The wall listed here is a ... 
-Flowers By Carlos|3139 Mission St, San Francisco, CA 94110|FlowersCarlos.jpg|+14153683802|37.765214|-122.419862||
 The Sandwich Place|2029 Mission St, San Francisco, CA 94110|Sandwich.jpg|+14154313811|37.76443|-122.4191||
 Sorrel|945 Valencia St, San Francisco, CA 94107|leather-craft.jpg|+13039312870|37.7577896118|-122.420906067||
 Samiramis Imports|2990 Mission St, San Francisco, CA 94110|SImports.jpg|+14158246555|37.749645|-122.41834||
 Californios|3115 22nd St, San Francisco, CA 94110|cali.jpg|+14157570994|37.7556668827|-122.41694884||
 El Gallo Giro Taco Truck|23rd St & Treat Ave, San Francisco, CA 94110|truck.jpg|+14152401224|37.75417|-122.41312||
-Seward Street Slides|30 Seward St, San Francisco, CA 94114|https://www.yelp.com/biz/seward-street-slides-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14152544299|37.7579189398|-122.439813774||
 Shizen Vegan Sushi Bar & Izakaya|370 14th St, San Francisco, CA 94103|https://www.yelp.com/biz/shizen-vegan-sushi-bar-and-izakaya-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14156785767|37.7683096|-122.4216669||
+Seward Street Slides|30 Seward St, San Francisco, CA 94114|https://www.yelp.com/biz/seward-street-slides-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14152544299|37.7579189398|-122.439813774||
 Miyako Old Fashioned Ice Cream|1470 Fillmore St, San Francisco, CA 94118|https://www.yelp.com/biz/miyako-old-fashioned-ice-cream-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14159315260|37.7829835564|-122.432590127||
 Philz Coffee|549 Castro St, San Francisco, CA 94114|https://www.yelp.com/biz/philz-coffee-san-francisco-2?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14158759656|37.7601254|-122.4348964||
 L'ardoise Bistro|151 Noe St, San Francisco, CA 94114|https://www.yelp.com/biz/l-ardoise-bistro-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14154372600|37.7665241|-122.4331385||
@@ -41,7 +42,7 @@ Ichido|687 Minna St, San Francisco, CA 94107|https://www.yelp.com/biz/ichido-san
 Neighbor's Corner|499 Douglass St, San Francisco, CA 94114|https://www.yelp.com/biz/neighbors-corner-san-francisco-2?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14159930499|37.7555693686|-122.438793406||
 City Hall|1 Dr Carlton B Goodlett Pl, San Francisco, CA 94102|https://www.yelp.com/biz/city-hall-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14157012311|37.7793900915|-122.418615818||
 Lyon Street Steps|Lyon Street & Green St, San Francisco, CA 94123|https://www.yelp.com/biz/lyon-street-steps-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14154372600|37.7946895604|-122.446746958||
-Blue Bottle Coffee|315 Linden St, San Francisco, CA 94102|https://www.yelp.com/biz/blue-bottle-coffee-san-francisco-8?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+15106533394|37.77638|-122.423211||
+Blue Bottle Coffee|315 Linden St, San Francisco, CA 94102|https://www.yelp.com/biz/blue-bottle-coffee-san-francisco-8?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+15106533394|37.73638|-122.425211||
 Philz Coffee|748 Van Ness Ave, San Francisco, CA 94102|https://www.yelp.com/biz/philz-coffee-san-francisco-4?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14152927660|37.782383|-122.420526||
 Corona Heights Park|32 Museum Way, San Francisco, CA 94114|https://www.yelp.com/biz/corona-heights-park-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14154372600|37.7652326194|-122.439369238||
 Rosamunde Sausage Grill|545 Haight St, San Francisco, CA 94117|https://www.yelp.com/biz/rosamunde-sausage-grill-san-francisco?adjust_creative=g9OIa3eB5Hmh6MJ2lfBVLA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=g9OIa3eB5Hmh6MJ2lfBVLA|+14154376851|37.77183|-122.43114||

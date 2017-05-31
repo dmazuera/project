@@ -2,7 +2,6 @@ console.log("in booking js")
 
 
 
-
 $('#calc-months').on('click', function(evt){ 
     evt.preventDefault();
     console.log("noticed click")
@@ -26,19 +25,12 @@ function total(start_date, end_date) {
         var start_value = calendar[start_date];
     }
 
-
     if (end_date in calendar){
         var end_value = calendar[end_date];
     }
-        // console.log(start_value)
-        // console.log(end_value)
-
+   
     var totalMonths = end_value - start_value +1;
-    // console.log(totalMonths)
-
     var priceListing = parseInt($('#rent-price-result').data("listing-price"));
-
-    // FIN any element on this page and add a data attribute to it... data-
     var totalPrice = totalMonths * priceListing;
     // console.log(totalPrice)
 
