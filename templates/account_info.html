@@ -2,121 +2,77 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <h1>Account Info</h1>
 
-<button onclick="window.location.href='/user_info'">User Info</button>
-<br>
+<h1> User information for: {{ user.first_name }} {{ user.last_name }}</h1>
+
+Email: {{ user.email }}<br>
+
+Phone Number: {{ user.phone }}
+
+<p>
+<img src='{{ user_photo }}'/>
+</p>
+
+{{ user.description }}
+
+<p>
+User Ad: <br>
+<img src='{{ user_ad }}' width="50%" height="50%" />
+</p>
+
+
+
 <button onclick="window.location.href='/new_listing'">Listings Posted</button>
 <!-- option to delete listing  -->
 
 <button onclick="window.location.href='/purchase_history'">Purchase History</button>
 <br>
-<button onclick="window.location.href='/delete_account'">Delete Account</button>
 
 
 
-   <title>Hackbright Coffee Shop</title>
+<br>
+<form action='/update_account' method="POST">
+<h3>Update Information:</h3><br>
+(please fill out all fields)<br>
+Email: 
+<input type="text" name= "email" required="True">
+Password: 
+<input type="password" name="password" required="True">
+<input type='submit' value="Update">
+</form>
+<br>
 
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-    <link href="static/coffee.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
-</head>
-<body>
-<div class="container">
-    <div class="starter-template">
-        <h1>Coffee Shop</h1>
-        <br>
+<form action='/update_account' method="POST">
+Change Phone Number:<br>
+<input type="text" name="phone" required>
+<input type='submit' value="Update">
+</form>
 
-        <img id="coffee-image" src="LOLWUT" height="300" width="200">
+<br>
+<form action='/update_account' method="POST">
+Change Profile Photo:<br>
+<input type="text" name="photo">
+<input type="submit" value="Update">
+</form>
+<br>
+<form action='/update_account' method="POST">
+Change Description:<br>
+<input type="text" name="description">
+<input type="submit" value="Update">
+</form>
+<br>
 
-        <h3 id="message">Click The Image To Order Coffee</h3>
-
-        <table class="table">
-            <tr>
-                <td class="col-md-2">
-                    <button class="btn btn-default" id="espresso">Espresso</button>
-                </td>
-                <td class="col-md-2">
-                    <button class="btn btn-default" id="latte">Latte</button>
-                </td>
-                <td class="col-md-2">
-                    <button class="btn btn-default" id="hot-chocolate">Hot Chocolate</button>
-                </td>
-            </tr>
-            <tr>
-                <td>$3.25</td>
-                <td>$4.15</td>
-                <td>$2.50</td>
-            </tr>
-        </table>
-
-        <h4>Total: <span id="revenue"><!-- Revenue Message will show up here --></span></h4>
-    </div>
-</div>
+<p>
+    <form action='/' method="POST">
+    <input type='submit' value='DELETE ACCOUNT'>
+    </form>
+</p>
 
 
 
-<script>
-    "use strict";
 
-    var myImage = $("#coffee-image");
-    var myRevenueMessage = $("#revenue");
-
-    myImage.attr('src', "static/coffee_beans.jpg");
-    myImage.on('click', makeCoffee);
-
-
-    function makeCoffee() {
-         myImage.attr('src', "static/coffee_machine.jpg");
-         setTimeout(function() { myImage.attr('src', "static/coffee_mug.jpg"); }, 1500);
-         setTimeout(function() { myImage.attr('src', "static/coffee_beans.jpg"); }, 4000);
-    }
-
-</script>
-
-<script>
-
-    // Step 1: Set these variables to their DOM elements
-    var myImage = document.getElementById("coffee-image");
-    var myRevenueMessage = document.getElementById("revenue");
-
-    // Step 1: Initialize the image to "coffee_beans.jpg"
-    myImage.setAttribute('src', "static/coffee_beans.jpg");
-
-
-    // Step 2: Create a function called make_coffee that changes the image to
-    // coffee_mug.jpg and add an event listener to the image that on a click
-    // will call make_coffee
-    myImage.addEventListener('click', makeCoffee);
-    //
-
-
-    function makeCoffee() {
-         myImage.setAttribute('src', "static/coffee_machine.jpg");
-         setTimeout(function() { myImage.setAttribute('src', "static/coffee_mug.jpg"); }, 1500);
-         setTimeout(function() { myImage.setAttribute('src', "static/coffee_beans.jpg"); }, 4000);
-    }
-
-</script>s
 
 
 
 {% endblock %}
 
-
-<!-- Here add the buttons for History, User info, Listings, delete account.
-
-** could also be a drop down instead of a whole new page *** -->
-
-
-<!-- 
- No Need to make it a seperate HTML Page
-  Use JS to have a left hand bar - and hold all information about an account in this HTML
-  Includes: 
-  		User info
-  		History purchases
-  		Listings owned
-  		Delete account. -->

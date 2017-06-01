@@ -2,39 +2,28 @@
 
 {% extends 'base.html' %}
 {% block content %}
-  <h1>Listing Info</h1>
 
 
-        <div class="col-xs-6">
-        <div id="profile-pic">    
-
-            <form enctype="multipart/form-data">
-            <div id="update-pic" class="form-group file-container" hidden>
-            <label class="btn btn-info btn-file">
-                    
-                    Browse <input id="user-photo" type="file" style="display: none;" name="file">
-            </label>
-                <input type="button" id="upload-pic" value="Upload" class="btn btn-info">
-            </div>
-            </form>
-        </div>
-        </div>
-<br>
-<img src='{{ listing_owner_photo }}' width="50%" height="50%" />
-
-<img src='/static/img/Shenas_thrift_wall.jpg' width="50%" height="50%" />
-
-  <div> 
-    <h2>Basic Info: </h2>
-    <ul>
+  <ul>
         <li>
               <a href="/listing/{{ listing.listing_id }}">
                 {{ user.email }} {{ user.user_id }}
               </a>
         </li>
     </ul>
-            Photo<br>
+    <br>
+  <h1>Listing Info</h1>
 
+
+
+<img src='{{ listing_owner_photo }}' width="50%" height="50%"/>
+<br>
+<p>
+<img src='{{ listing_image }}' width="50%" height="50%" /></p>
+
+
+  <div> 
+    <h2>Basic Info: </h2>
 
             Business Name:<br>
             {{ listing.business }}<br><br>
@@ -55,23 +44,25 @@
   </div>
 
 
- <!-- Trigger the modal with a button -->
+                <!-- Trigger the modal with a button -->
                     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Click to See Listing Space </button>
 
                     <!-- Modal -->
                     <div id="myModal" class="modal fade" role="dialog">
                       <div class="modal-dialog">
 
-
                         <!-- Modal content-->
 
-                        <div class="modal-content" style="background-image: url('/static/img/Shenas_thrift_wall.jpg'); background-size: cover;"> 
+                        <div class="modal-content" style="background-image: url('{{ listing_image }}'); background-size: cover;"> 
                           <!-- search css terms for forground image -->
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Modal Header</h4>
                           </div>
                           <div class="modal-body">
+                          <ul>
+                          
+                          </ul>
                             <p>Some text in the modal.</p>
                           </div>
                           <div class="modal-footer">
@@ -125,7 +116,7 @@
                 <br> Price<br>
             $ {{ listing.price }} / month<br><br>
 
-                <input type="submit" id="calc-months" class="btn btn-primary input-sm"><br><br>
+                <input type="submit" id="calc-months" class="btn btn-primary input-sm" value="Calculate"><br><br>
                 <label>Total Price for months selected: $  </label> <span id="rent-price-result" data-listing-price="{{ listing.price }}" name="rent-price-result">&nbsp;</span>
 
 
@@ -137,17 +128,82 @@
             <label> Width:<input type="text" size="5" name="ad_width" id="ad-width" required>ft </label> <br> <br>
 
 
-            <input type="submit" id="book_listing" name="book_listing" class="btn btn-primary input-sm" value="Book!"> <br><br>
-
       </form>
-
- 	        
 	</div>
 
+
+
+
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modal">Request This Listing!</button>
+
+<!-- Modal -->
+<div id="Modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Review Below</h4>
+      </div>
+      <div class="modal-body">
+        <p> You are just one step away from booking your ad listing! Next we will be contacting the business owner to confirm you're request. The dates selected by your request will remain blocked until a confirmation/decline is posted on our site.</p>
+        <p> An email will be sent to {{ listing.business }} with the following information. Please review and double check that all parameters have been correctly selected.</p>
+        <h5> Request Detail </h5>
+        <li> Total Booking Price: </li>
+        <li> Start Month: </li>
+        <li> End Month: </li>
+        <li> Ad Height: </li>
+        <li> Ad Width: </li>
+        <h5> User Requesting Listing</h5>
+        <p><img src='{{ user_photo }}' width="50%" height="50%"/> </p>
+        <li> {{ user.first_name }} {{ user.last_name }}</li>
+        <li> {{ user.phone }}</li>
+        <li> {{ user.email }}</li>
+        <h5> Optional area to comment:</h5>
+        <textarea name="comment" form="usrform">Enter text here...</textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Submit Request</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- user.user_id
+user.email
+user.phone -->
+
+
+
+
+
+<!-- 
+
+-if text -
+
+    <div id="Booking"></div>
+
+    {% if 'login' in session %}
+        <form id="send_text">
+            <input name="request_booking" id="request_booking" type="hidden">
+            <input type="submit" name="submit" value="Request Booking">
+        </form>
+    {% else %}
+        <a href='/' id="logintextbtn"><button>Login to Request Booking</button></a>
+    {% endif %}
+     -->
+
+
+
+
+
+
 <script src="http://code.jquery.com/jquery.js"></script>
-
 <script src="/static/js/booking.js"></script>
-
-
+<!-- <script src="/static/js/text.js"></script> -->
 
 {% endblock %}

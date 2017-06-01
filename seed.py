@@ -13,14 +13,14 @@ def load_users():
     print "Users"
     for i, row in enumerate(open("user_data.csv")):
         row = row.rstrip()
-        user_photo, username, first_name, last_name, email, password, phone, ad_image, city, is_activated= row.split(",")
+        user_photo, username, first_name, last_name, email, password, phone, ad_image, state, description= row.split(",")
 
         user = User(first_name=first_name,
                     last_name=last_name,
                     phone=phone,
                     email=email,
                     password=password,
-                    is_activated=is_activated, 
+                    description=description, 
                     user_photo=user_photo,
                     ad_image=ad_image)
         
@@ -39,7 +39,7 @@ def load_listings():
         row = row.rstrip()
 
         try:
-            business, address, owner_picture, phone, lat, lng, listing_photo, description = row.split("|")
+            business, address, owner_picture, phone, lat, lng, user_id, listing_photo = row.split("|")
         except ValueError:
             import pdb; pdb.set_trace()
 
@@ -52,9 +52,8 @@ def load_listings():
                       phone=phone,
                       lat=float(lat),
                       lng=float(lng),
-                      owner_picture=owner_picture, 
-                      listing_photo=listing_photo,
-                      description=description)
+                      owner_picture=owner_picture,
+                      listing_photo=listing_photo)
 
         db.session.add(listings)
         if i % 100 == 0:

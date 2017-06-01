@@ -44,4 +44,41 @@ function total(start_date, end_date) {
 
 
 
+// $('#book_listing').on('click', function(evt){ 
+//     evt.preventDefault();
+//     console.log("noticed booking click")
+
+//     //open modal window saying... This 
+
+//     var start_date = $('#start_date').val();
+//     var end_date = $('#end_date').val();
+//     var booking_price = $('#rent-price-result').val();
+//     var ad_height = $('#ad-height').val();
+//     var ad_width = $('#ad-width').val();
+
+//     $('#rent-price-result').text(total_amount);
+
+// })
+
+
+// $('#show-ajax').on('click',function(){
+//     console.log("Show Ajax Click")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

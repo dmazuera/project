@@ -14,33 +14,6 @@
     <title>OOH</title>
 </head>
 <body>
-<!-- 1.  -->
-<!-- <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">
-                <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
-                AdCollab - connect, collaborate, get noticed!
-            </a>
-            </div>
-            <div id="navbar">
-                <ul class="nav navbar-nav">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
-                    
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a href="#">Login</a></li>
-                    <li><a href="#">Settings</a></li>
-
-                    <li><a href="#">Profile</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav> -->
-
-
-<!-- 2.  -->
 
  <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -62,34 +35,47 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li>
+                    {% if "user" not in session %}
+                    <a href="/"></a>
+                    {% endif %}
+                    {% if "user" in session %}
+                    <a href="/advertise">Book A Listing</a></li>
+                    {% endif %}
                 </ul>
                 <form class="navbar-form navbar-right">
-              <div class="form-group">
-                <label for="searchform"></label>
-                <input type="text" class="form-control" id="searchform" placeholder="Enter Search Here">
-              </div>
-              <button type="submit" class="btn btn-default">Submit</button>
-          </form>
+                <div class="form-group">
+                    <label for="searchform"></label>
+                    <input type="text" class="form-control" id="searchform" placeholder="Enter Search Here">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+                </form>
                 <ul class="nav navbar-nav navbar-right">
-                  <li data-toggle="modal"
-            data-target=".bs-example-modal-sm"><a href="#">Login</a></li>
-                  <li class="dropdown">
-                        <a href="#"
+                <li data-toggle="modal"
+                    data-target=".bs-example-modal-sm">
+                {% if "user" not in session %}
+                <a href="/">Login</a>
+                {% endif %}
+                {% if "user" in session %}
+                <a href="/logout">Logout</a>
+                {% endif %}
+                </li>
+                    <li class="dropdown">
+                    {% if "user" in session %}
+                        <a href="/account_info"
                            class="dropdown-toggle"
                            data-toggle="dropdown"
                            role="button"
                            aria-expanded="false">
-                            Your Account <span class="caret"></span></a>
+                            Settings <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Settings</a></li>
+                            <li><a href="/account_info">Your Account</a></li>
                             <li class="divider"></li>
-                            <li><a href="#">Profile</a></li>
-
+                            <li><a href="/new_listing">Create a Listing</a></li>
+                            <li><a href="#">Booking History</a></li>
                             <li><a href="#">Help</a></li>
                         </ul>
+                    {% endif %}
                     </li>
                 </ul>
             </div>
@@ -98,43 +84,6 @@
 
 
 
-
-
-
-<!-- 3.  -->
-<!-- <nav class="navbar navbar-inverse" style="margin-bottom: 0px">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                AdCollab - connect, collaborate, get noticed!
-            </a>
-        </div> -->
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <!-- <div class="collapse navbar-collapse"
-             id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-              {% if "user_id" in session %}
-                  <li><a href="/users/{{ session['user_id'] }}">Profile</a></li>
-                  <li><a href="/logout">Logout</a></li>
-              {% else %}
-                  <li><a href="/register">Register</a></li>
-                  <li><a href="/login">Login</a></li>
-              {% endif %}
-
-            </ul>
-        </div>
-    </div>
-</nav> -->
 
 
 

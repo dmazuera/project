@@ -3,17 +3,13 @@ from flask import Flask, jsonify, render_template, request, flash, redirect, ses
 from flask_debugtoolbar import DebugToolbarExtension
 from model_project import connect_to_db, db, User, Listings, Rental_Records
 import json
+import bcrypt
+import re
 
 
 
 app = Flask(__name__)
-
-# Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
-
-# Normally, if you use an undefined variable in Jinja2, it fails
-# silently. This is horrible. Fix this so that, instead, it raises an
-# error.
 app.jinja_env.undefined = StrictUndefined
 
 #____________________________________________________________________________________________
@@ -66,15 +62,17 @@ def process_login():
     password = request.form.get('password')
     user = User.query.filter_by(email=email).first()
 
+
+
     if not user:
-        #if not user....
-        flash("YOU ARE NOT IN THE SYSTEM - please register")
+        flash("Email not found. Please register")
         return redirect("/")
     else:
         if password == user.password:
-            # login success
+            password = password.encode('utf8')
+            hashedpass = user.password.encode('utf8') 
             session["user"] = user.user_id
-            flash("Thank you for Logging In!")
+            flash("Thank you for logging In")
             return redirect("/entry_page")
 
         elif password != user.password:
@@ -87,7 +85,7 @@ def process_login():
 def logout():
     """Log out."""
 
-    del session["user_id"]
+    del session["user"]
     flash("Logged Out.")
     return redirect("/")
 
@@ -116,113 +114,111 @@ def new_user():
 
 
 
-
 @app.route('/process_new_user', methods=['POST'])
 def process_new_user():
-    """Process new user to User DB."""
+    """Process new user."""
 
-    # Get form variables
-    first_name = request.form["fname"]
-    last_name = request.form["lname"]
-    email = request.form["email"]
-    password = request.form["password"]
-    phone = request.form["lname"]
-    zipcode = request.form["zipcode"]
-    description = request.form["description"]
+    first_name = request.form.get("fname")
+    last_name = request.form.get("lname")
+    email = request.form.get("email")
+    email = email.lower()
+    password = request.form.get("password")
+    password = password.encode('utf8') 
+    hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+    phone = request.form["phone"]
+    phone = re.sub(r"[\-\(\)\.\s]+", "", phone)
+    zipcode = request.form.get("zipcode")
+    description = request.form.get("description")
 
-    # To add this customer to db:
-    # 1. Create the user
-    user = User(first_name=first_name, last_name=last_name, phone=phone, 
-                email=email, password=password)
 
-    # 2. Add this customer to session
+    if db.session.query(User).filter(User.email==email).first():
+        flash('This email belongs to an existing account. Please login.')
+        return redirect('/new_user')
+    else:
+        if len(email) > 25:
+            flash('Email contains too many characters. Please try again')
+            return redirect('/new_user')
+        if len(phone) != 10:
+            flash("Invalid number. Make sure to include area code.")
+            return redirect('/new_user')
+        else:    
+            user = User(first_name=first_name, last_name=last_name, phone=phone, 
+                        email=email, password=hashed)
+            db.session.add(user)
+            db.session.commit()
+           
+            flash("User added successfully!!!")
+            session["user"] = user.user_id
+
+            return redirect("/entry_page")
+
+
+
+
+@app.route('/account_info')
+def display_user_information():
+    """displays user information"""
+
+    if "user" in session:
+        user = User.query.get(session["user"])
+        user_photo = "/static/img/" + str(user.user_photo)
+        user_ad = "/static/img/" + str(user.ad_image)
+        user_id = user.user_id
+
+        listing = Listings.query.filter(Listings.owner_id==user_id).first()
+        print listing
+
+
+        return render_template('account_info.html', user=user,
+                                                    user_photo=user_photo,
+                                                    user_ad=user_ad)
+    else:
+        flash("Please login in to view")
+        return redirect ('/')
+
+
+
+@app.route('/update_account', methods=["POST"])
+def update_account_info():
+    """Updates account information"""
+
+    first_name = request.form.get("fname")
+    last_name = request.form.get("lname")
+    email = request.form.get("email")
+    password = request.form.get("password")
+    phone = request.form.get("phone")
+    zipcode = request.form.get("zipcode")
+    description = request.form.get("description")
+    user = User.query.get(session["user"])
+
+    if email:
+        if len(email) > 25:
+            flash('Password or email too long')
+        else:
+            email = email.lower()
+            user.email = email.rstrip()
+            password = password.rstrip()
+            password = password.encode('utf8') 
+            hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+            user.password = hashed
+            flash('Information Updated')
+    
+    if phone:
+        phone=re.sub(r"[\-\(\)\.\s]+", "", phone)
+        if len(phone) != 10:
+            flash("Invalid number. Make sure to include area code.")
+        else:
+            user.phone = phone.rstrip()
+            flash('Information Updated')
+        
+    
     db.session.add(user)
-
-    # 3. Commit the changes
     db.session.commit()
 
-    # 4. Display a flash message to confirm user added
-    flash("User added successfully!!!")
-
-    return redirect("/")
+    return redirect('/account_info')
 
 
 
-# #???????????????????????????????????????????/
-# @app.route('/account_page')
-# def account_page(): 
-#     """" """
-#     user_id = session.get("user")
-#     user = User.query.get(user_id)
-
-#     #I am passing the whole object "user" to this page... I can then on the page take out of "user" all the attributes
-#     return render_template("user_info.html", user=user)
-
-
-# # USER PAGE
-# @app.route("/users/<int:user_id>")
-# def user_info(user_id):
-#     """Show info about user."""
-
-#     user = User.query.get(user_id)
-#     return render_template("user.html", user=user)
-# #??????????????????????????????????????????????????
-
-
-####################################################################################################
-
-#USER  
-
-@app.route("/user/<int:user_id>", methods=['GET'])
-def user_detail(user_id):
-    """Show info about user.
-    If a user is logged in, let them add/edit their page.
-    """
-    user = User.query.get(user_id)
-    user_id = session.get("user_id")
-
-    #below will be all the things a user can SEE that is THEIR own on the PAGE
-    if user_id:
-        first_name = User.query.filter_by(
-            movie_id=movie_id, user_id=user_id).first()
-
-    else:
-        user_rating = None
-
-    #passing the items a user will be able to see that is THERE OWN on the HTML page
-    return render_template("user_info.html",
-                           user=user,
-                           user_rating=user_rating)
-
-
-# #________________or_________________
-
-
-@app.route("/user/<int:user_id>", methods=['POST'])
-def user_edit_process(user_id):
-    """Add/edit user info."""
-
-    # Get form variables
-    score = int(request.form["score"])
-
-    user_id = session.get("user_id")
-    if not user_id:
-        raise Exception("No user logged in.")
-
-    rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first()
-
-    if rating:
-        rating.score = score
-        flash("Rating updated.")
-
-    else:
-        rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-        flash("Rating added.")
-        db.session.add(rating)
-
-    db.session.commit()
-
-    return redirect("/movies/%s" % movie_id)
 
 
 
@@ -244,31 +240,26 @@ def process_new_listing():
     """Process new listing to Listings DB."""
 
     # Get form variables
-    business = request.form["business"]
-    phone = request.form["phone"]
-    address = request.form["address"]
-    zipcode = request.form["zipcode"]
-    height_max = request.form["height"]
-    width_max = request.form["width"]
-    price = request.form["price"]
-    # description = request.form["description"]
+    business = request.form.get("business")
+    phone = request.form.get("phone")
+    phone = re.sub(r"[\-\(\)\.\s]+", "", phone)
+    address = request.form.get("address")
+    zipcode = request.form.get("zipcode")
+    height_max = request.form.get("height")
+    width_max = request.form.get("width")
+    price = request.form.get("price")
+    description = request.form["description"]
 
-    # To add this listing to db:
-    # 1. Create the listing
+  
     listing = Listings(business=business, phone=phone, address=address, zipcode=zipcode, 
                        height_max=height_max, width_max=width_max)
 
-    # 2. Add this listing to DB
     db.session.add(listing)
-
-    # 3. Commit the changes
     db.session.commit()
 
-    # 4. Display a flash message to confirm listing added
     flash("Listing added successfully!!!")
 
     return redirect("/")
-
 
 
 
@@ -307,21 +298,22 @@ def listing_detail(listing_id):
     If a user is logged in, let them add/edit a rating.
     """
     user_id = session.get("user")
-
     print user_id
     user = User.query.filter_by(user_id=user_id).first()
+    user_photo = "/static/img/" + str(user.user_photo)
+
     listing = Listings.query.get(int(listing_id))
     listing_owner_photo = "/static/img/" + str(listing.owner_picture)
     listing_image= "/static/img/" + str(listing.listing_photo)
+  
+
 
     # raise Exception
     return render_template("listing_details.html", listing=listing,
                                                    user=user, 
                                                    listing_owner_photo=listing_owner_photo,
-                                                   listing_image=listing_image )
-
-
-
+                                                   listing_image=listing_image,
+                                                   user_photo=user_photo)
 
 
 
@@ -339,6 +331,10 @@ def advertise():
 
 
 
+
+
+
+
 @app.route('/search_zipcode')
 def search_zipcode():
     """Show map of SF with search functionality on page."""
@@ -352,7 +348,7 @@ def search_zipcode():
 
 
 
-# USE TO GET OUT listings with the FILTERS!!! Mentioned by user.
+
 @app.route('/filter_search.json')
 def filter_search():
     """Show map of SF with filters."""
@@ -362,8 +358,6 @@ def filter_search():
     height = float(request.args.get('height'))
     width = float(request.args.get('width'))
     
-    print "hi"
-    print "height"
     # Retrieves listings from db_queries
     listings = find_all_listings( height, width, low_price, high_price)
 
@@ -386,7 +380,7 @@ def find_all_listings(height, width, low_price, high_price):
             "Long": listing.lng,
             "heightmax": listing.height_max,
             "widthmax": listing.width_max,
-            "image": listing.image,
+            "image": listing.listing_photo,
             "price": listing.price
         }
         for listing in Listings.query.filter( (Listings.height_max >= height), 
@@ -396,45 +390,79 @@ def find_all_listings(height, width, low_price, high_price):
     return listings
 
 
+
+
+
+
+
+# @app.route('/send_text.json', methods=["POST"])
+# def send_text():
+#     """Creates a new message in the MessagesToSend table"""
+
+#     user = User.query.get(session["user"])
+#     if user.phone:
+#         time = request.form.get("cleaningtime")
+#         message = MessageToSend(user_id=session["user"], time= time)
+#         db.session.add(message)
+#         db.session.commit()
+#         result = {'info_message': 'True',
+#                    'number': user.phone}
+#         return jsonify(result)
+#     else:
+#         flash("You must have a phone number to get texts")
+#         result = {'info_message': 'False'}
+#         return jsonify(result)
+
+
+
+
+
+
+
 #######################################################################################################
 
 
-@app.route('/process_booking', methods=['POST'])
-def process_booking():
-    """Process new booking to DB."""
+# @app.route('/process_booking', methods=['POST'])
+# def process_booking():
+#     """Process new booking to DB."""
 
-    # Get form variables
-    start_date = request.form["start_date"]
-    end_date = request.form["end_date"]
-    ad_height = request.form["ad_height"]
-    ad_width = request.form["ad_width"]
-    price = request.form["result"]
+#     # Get form variables
+#     start_date = request.form.get("start_date")
+#     end_date = request.form.get("end_date")
+#     ad_height = request.form.get("ad_height")
+#     ad_width = request.form.get("ad_width")
+#     price = request.form.get("result")
    
-    is_active = True
-    user_id = session.get("user")
+#     is_active = True
+#     user_id = session.get("user")
 
 
-    record = Rental_Records(user_id=user_id, start_date=start_date, end_date=end_date, 
-                ad_height=ad_height, price=price, is_active=is_active)
+#     record = Rental_Records(user_id=user_id, start_date=start_date, end_date=end_date, 
+#                 ad_height=ad_height, price=price, is_active=is_active)
 
-    db.session.add(record)
-    db.session.commit()
+#     db.session.add(record)
+#     db.session.commit()
 
-    flash("Booking confirmed!!!")
+#     flash("Booking confirmed!!!")
 
-    return redirect("/book_listing")
-
-
+#     return redirect("/book_listing")
 
 
-@app.route("/book_listing")
-def book_listings():
-    """Show list of listings."""
 
-    rentals = Rental_Records.query.order_by('rental_id').all()
 
-    return render_template("use_rental_confirmation.html",
-                            rentals=rentals)
+
+
+
+
+
+# @app.route("/book_listing")
+# def book_listings():
+#     """Show list of listings."""
+
+#     rentals = Rental_Records.query.order_by('rental_id').all()
+
+#     return render_template("use_rental_confirmation.html",
+#                             rentals=rentals)
 
 
 
