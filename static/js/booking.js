@@ -38,7 +38,22 @@ function total(start_date, end_date) {
 }
 
 
+// $('#un-hide')on('click', function(){
+//     console.log("hi")
+//     $(this).css("display","show");
+// });
 
+function unhide(){
+    console.log("hi")
+    $('#overlay_image').css("display","block");
+}
+  
+
+// this.$element.on('click.dismiss.bs.modal', '[data-dismiss="background"]', $.proxy(this.hide, this))
+
+
+
+// $('#calc-months').on('click', function(evt){ 
 
 
 

@@ -28,3 +28,28 @@ p {
   margin: 1em;
   padding: 1em; 
 }
+
+
+#container{
+    position: relative;
+    width: 1000px;
+    height: 600px;
+}
+#main_image{
+    width: 60%;
+    height: 60%;
+    background: url('/static/img/Shenas_thrift_wall.jpg');
+}
+
+
+#overlay_image{
+    z-index: 500;
+    bottom: 10px;
+    right: 10px;
+    width: 100px;
+    height: 100px;
+    display:none;
+}
+
+
+
