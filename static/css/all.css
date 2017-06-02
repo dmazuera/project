@@ -41,15 +41,18 @@ p {
     background: url('/static/img/Shenas_thrift_wall.jpg');
 }
 
+ .dragme{
+      position:relative;
+      width: 120px;
+      height: 100px;
+      cursor: move;
+    }
+  #draggable {
+      background-color: #ccc;
+      border: 1px solid #000;
+    }
 
-#overlay_image{
-    z-index: 500;
-    bottom: 10px;
-    right: 10px;
-    width: 100px;
-    height: 100px;
-    display:none;
-}
+
 
 
 
